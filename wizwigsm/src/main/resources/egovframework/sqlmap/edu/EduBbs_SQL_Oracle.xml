@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="BbsDAO">
+	
+	<typeAlias  alias="egovMap"  type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias  alias="BbsVO" 	type="egovframework.edu.bbs.service.BbsVO"/>		
+	
+	<!-- id = DAO의 키값으로 넘겨준 값 -->
+	<select id="BbsDAO.selectBbsList" parameterClass="BbsVO" resultClass="BbsVO">
+				
+		<![CDATA[
+			SELECT ID 
+				 ,TITLE
+				 ,CN
+				 ,USR_NM
+				 ,CNT
+				 ,REG_DATE
+				 ,USE_AT
+				 FROM T_EDUBBSINFO
+				 WHERE 1=1
+		]]> 	
+	</select> 	
+	
+	<!-- ID값 셋팅 -->
+	<select id="BbsDAO.selectBbsId" parameterClass="BbsVO" resultClass="java.lang.Integer">
+		<![CDATA[
+			SELECT SEQ_EDUBBSINFO.NEXTVAL
+			FROM DUAL			
+		]]>
+	</select>
+	
+	<!-- 등록 -->
+	<insert id="BbsDAO.insertBbs" parameterClass="BbsVO">
+		<![CDATA[
+			INSERT INTO T_EDUBBSINFO
+				( ID
+				 ,TITLE
+				 ,CN
+				 ,USR_NM
+				 ,CNT
+				 ,REG_DATE
+				 ,USE_AT)
+			VALUES
+				( #id#
+				 ,#title#
+				 ,#cn#
+				 ,#usr_nm#
+				 ,0
+				 ,SYSDATE
+				 ,'N')
+		]]>
+	</insert>
+	
+	<!-- 조회수 구하기 -->
+	<select id="BbsDAO.selectBbsCnt" parameterClass="BbsVO" resultClass="BbsVO">
+		<![CDATA[
+			SELECT NVL(MAX(CNT),0)+1 AS cnt
+			FROM T_EDUBBSINFO
+			WHERE 1=1
+			AND ID=#id#
+		]]>
+	</select>
+	
+	<!-- 조회수 증가 -->
+	<update id="BbsDAO.updateBbsCnt" parameterClass="BbsVO">
+		<![CDATA[
+			UPDATE T_EDUBBSINFO
+			SET 
+			CNT = #cnt#
+			WHERE 1=1
+			AND ID = #id# 
+		]]>
+	</update>
+	
+	<!-- 상세 -->
+	<select id="BbsDAO.selectBbsDetail" parameterClass="BbsVO" resultClass="BbsVO">
+		<![CDATA[
+			SELECT ID
+				,TITLE
+				,CN
+				,USR_NM
+				,CNT
+				,REG_DATE
+				FROM T_EDUBBSINFO
+				WHERE 1=1
+				AND ID=#id#
+		]]>
+	</select>
+	
+	<!-- 수정 -->
+	<update id="BbsDAO.updateBbs" parameterClass="BbsVO">
+		<![CDATA[
+			UPDATE T_EDUBBSINFO
+				SET TITLE=#title# 
+				, USR_NM=#usr_nm#
+				, CN=#cn#
+				WHERE 1=1
+				AND ID=#id#
+		]]>
+	</update>
+	
+	<!-- 삭제 -->
+	<delete id="BbsDAO.deleteBbs" parameterClass="BbsVO">
+		<![CDATA[
+			DELETE FROM T_EDUBBSINFO
+			WHERE 1=1
+			AND ID=#id#
+		]]>
+	</delete>
+	
+	
+
+</sqlMap>

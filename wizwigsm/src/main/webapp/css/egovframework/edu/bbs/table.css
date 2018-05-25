@@ -1,0 +1,53 @@
+@CHARSET "UTF-8";
+
+table{
+	width: 500px;
+	height: 100px;	
+}
+
+h3{
+	color: #000040;
+}
+
+.aColor>td{	
+	text-align : center;
+	background-color: #f8f8f8;
+	font-weight: bold;
+}
+
+.aColor>td>a{
+	color:#8000ff;
+	text-decoration:none;
+}
+
+.tdstyle{
+	color:#f8f8f8;
+	background-color: #ff0080;
+	text-shadow:  1px 1px 2px #000040;
+}
+
+#tdstyle_cn{
+	height: 250px;
+}
+
+tr>td>.inputBack{
+	background-color: #f8f8f8;
+	height: auto; /* 높이 초기화 */ 
+	line-height: normal; /* line-height 초기화 */ 
+	padding: .3em .4em; /* 여백 설정 */
+	width: 95%;
+}
+
+tr>td>.inputBackCn{
+	background-color: #f8f8f8;
+	height: auto; /* 높이 초기화 */ 
+	line-height: normal; /* line-height 초기화 */ 
+	padding: .3em .4em; /* 여백 설정 */
+	width: 95%;
+	height: 250px;
+}
+
+.tdtitle>a{
+	color:#8000ff;
+	text-decoration: none;
+}

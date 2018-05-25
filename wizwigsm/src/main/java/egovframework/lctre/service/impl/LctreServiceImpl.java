@@ -1,0 +1,62 @@
+package egovframework.lctre.service.impl;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
+import egovframework.lctre.service.LctreService;
+import egovframework.lctre.service.LctreVO;
+import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+
+//Service("EduLoginService) : 메모리상에 해당 클래스를 올리고 별다른 생성자 없이 선언한 값으로 호출하여 사용할 수 있다.
+@Service("LctreService")
+public class LctreServiceImpl extends EgovAbstractServiceImpl implements LctreService {
+
+	@Resource(name = "LctreDAO")
+	private LctreDAO lctreDAO;
+	
+	// 강의목록
+	public List<LctreVO> selectLctreList(){	
+		return lctreDAO.selectLctreList();
+	} 
+	
+	// 강의등록_comboBox 
+	public List<LctreVO> selectInstrctrNmCobList(LctreVO paramVO){
+		return lctreDAO.selectInstrctrNmCobList(paramVO);
+	}
+
+	// 강의등록
+	public void insertLctreForm(LctreVO paramVO){
+		lctreDAO.insertLctreForm(paramVO);
+	}
+	
+	// 조회수 select
+	public LctreVO selectLctreRdcnt(LctreVO paramVO){		
+		return lctreDAO.selectLctreRdcnt(paramVO);
+	}
+	
+	// 조회수 update
+	public void updateLctreRdcnt(LctreVO paramVO){
+		lctreDAO.updateLctreRdcnt(paramVO);
+	}
+	
+	// 강의상세
+	public LctreVO selectLctreDetail(LctreVO paramVO){		
+		return lctreDAO.selectLctreDetail(paramVO);
+	}	
+	
+	// 강의수정
+	public void updateLctre(LctreVO paramVO){
+		lctreDAO.updateLctre(paramVO);
+	}
+	
+	// 강의삭제
+	public void deleteLctre(LctreVO paramVO){
+		 lctreDAO.deleteLctre(paramVO);
+
+	}
+	
+	
+}
