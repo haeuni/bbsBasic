@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.lctre.service.LctreService;
 import egovframework.lctre.service.LctreVO;
+import egovframework.lctre.service.ReqstVO;
 
 // @Controller : 컨트롤러 선언 _ 해당 클래스가 Controller임을 나타내기 위한 어노테이션
 // 대부분 service를 통한 DB 데이터 호출을 위한 클래스다.
@@ -23,12 +24,19 @@ public class LctreController {
 	
 	// 목록
 	@RequestMapping("/edu/lctre/selectLctreList.do")
-	public String selectLctreList(HttpServletRequest request
+	public String selectLctreList(HttpServletRequest request			
 			, @ModelAttribute(value="paramVO") LctreVO paramVO
 			, ModelMap model) throws Exception{
 		
 		try{		
-			List<LctreVO> lctreList = lctreService.selectLctreList();
+			
+			// 모집 COUNT
+			// reqstCntList에는 신청자수가 담긴다.
+			/*List<LctreVO> reqstCntList = lctreService.selectReqstCnt(paramVO);
+			model.addAttribute("reqstCntList", reqstCntList);*/
+			
+			// 목록리스트
+			List<LctreVO> lctreList = lctreService.selectLctreList(paramVO);
 			model.addAttribute("lctreList", lctreList);
 			
 		}catch(Exception e){

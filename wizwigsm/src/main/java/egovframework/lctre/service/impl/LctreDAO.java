@@ -6,15 +6,21 @@ import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.lctre.service.LctreVO;
+import egovframework.lctre.service.ReqstVO;
 
 @Repository("LctreDAO")
 public class LctreDAO extends EgovComAbstractDAO {
 
 	// 강의목록
-	public List<LctreVO> selectLctreList(){
-		return (List<LctreVO>)list("LctreDAO.selectLctreList");	
+	public List<LctreVO> selectLctreList(LctreVO paramVO){
+		return (List<LctreVO>)list("LctreDAO.selectLctreList", paramVO);	
 	}		
-
+	
+	// 강의목록_모집_신청테이블에서 해당 강의번호에 해당하는 신청 seq 얻어오기 --> 얻어와야 할 값 (= 강의번호, lctre_seq)
+/*	public List<LctreVO> selectReqstCnt(LctreVO paramVO){
+		return (List<LctreVO>)list("LctreDAO.selectReqstCnt", paramVO);
+	}
+	*/
 	// 강의등록_comboBox 
 	public List<LctreVO> selectInstrctrNmCobList(LctreVO paramVO){
 		return (List<LctreVO>)list("LctreDAO.selectInstrctrNmCobList", paramVO);

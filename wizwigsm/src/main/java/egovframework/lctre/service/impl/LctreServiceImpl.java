@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import egovframework.lctre.service.LctreService;
 import egovframework.lctre.service.LctreVO;
+import egovframework.lctre.service.ReqstVO;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 //Service("EduLoginService) : 메모리상에 해당 클래스를 올리고 별다른 생성자 없이 선언한 값으로 호출하여 사용할 수 있다.
@@ -18,10 +19,15 @@ public class LctreServiceImpl extends EgovAbstractServiceImpl implements LctreSe
 	private LctreDAO lctreDAO;
 	
 	// 강의목록
-	public List<LctreVO> selectLctreList(){	
-		return lctreDAO.selectLctreList();
+	public List<LctreVO> selectLctreList(LctreVO paramVO){	
+		return lctreDAO.selectLctreList(paramVO);
 	} 
 	
+/*	// 강의목록_모집 COUNT
+	public List<LctreVO> selectReqstCnt(LctreVO paramVO){
+		return lctreDAO.selectReqstCnt(paramVO);
+	}
+	*/
 	// 강의등록_comboBox 
 	public List<LctreVO> selectInstrctrNmCobList(LctreVO paramVO){
 		return lctreDAO.selectInstrctrNmCobList(paramVO);

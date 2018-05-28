@@ -13,6 +13,7 @@ public class LctreVO {
 	private String rdcnt;	//조회수
 	private String use_at;	//삭제여부
 	
+	private String reqst_cnt;	// 신청 count한 값
 	
 	public String getLctre_seq() {
 		return lctre_seq;
@@ -68,6 +69,12 @@ public class LctreVO {
 	public void setUse_at(String use_at) {
 		this.use_at = use_at;
 	}
+	public String getReqst_cnt() {
+		return reqst_cnt;
+	}
+	public void setReqst_cnt(String reqst_cnt) {
+		this.reqst_cnt = reqst_cnt;
+	}
 	
-	
+		
 }

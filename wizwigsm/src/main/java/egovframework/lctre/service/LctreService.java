@@ -6,9 +6,12 @@ import java.util.List;
 public interface LctreService {
 	
 	// 강의목록
-	public List<LctreVO> selectLctreList();
+	public List<LctreVO> selectLctreList(LctreVO paramVO);
 	
-	// 강의등록_comboBox 
+	// 강의목록_모집 COUNT
+	// public List<LctreVO> selectReqstCnt(LctreVO paramVO);
+	
+	// 강의등록_comboBox
 	public List<LctreVO> selectInstrctrNmCobList(LctreVO paramVO);
 	
 	// 강의등록

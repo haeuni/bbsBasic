@@ -6,6 +6,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script type="text/javascript">
+alert(reqstCntList);
+
 function fnForm(){	
 	var frm = document.frm;
 	frm.action = "/edu/lctre/selectLctreForm.do";
@@ -21,8 +23,7 @@ function fnDetail(lctre_seq){
 </head>
 <body>
 	<form id="frm" name="frm" method="post">		
-		<input type="hidden" id="lctre_seq" name="lctre_seq" />
-	
+		<input type="hidden" id="lctre_seq" name="lctre_seq" />	
 	
 	<h3>강의목록</h3>
 	<table border="1">
@@ -36,11 +37,25 @@ function fnDetail(lctre_seq){
 		</tr>		
 		<c:forEach var="result" items="${lctreList}" >
 		<tr>
+			<!-- 강의번호 -->
 			<td><c:out value="${result.lctre_seq}"/></td>
+			
+			<!-- 강의명 -->
 			<td><a href="javascript:void(0);" onclick="fnDetail('${result.lctre_seq}');"><c:out value="${result.lctre_nm}"/></a></td>
+			
+			<!-- 강사명 -->
 			<td><c:out value="${result.instrctr_nm}"/></td>
+			
+			<!-- 조회수 -->
 			<td><c:out value="${result.rdcnt}"/></td>
-			<td><c:out value="${result.rcrundt}"/></td>			
+			
+			<!-- 모집 -->
+			<td>			
+				<c:out value="${result.reqst_cnt}"/>			
+				/ <c:out value="${result.rcrundt}"/>
+			</td>			
+			
+			<!-- 등록일 -->
 			<td id="date"><c:out value="${result.frst_regist_pnttm}"/></td>
 		</tr>
 		</c:forEach>
