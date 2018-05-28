@@ -61,7 +61,16 @@ public class LctreServiceImpl extends EgovAbstractServiceImpl implements LctreSe
 	// 강의삭제
 	public void deleteLctre(LctreVO paramVO){
 		 lctreDAO.deleteLctre(paramVO);
-
+	}
+	
+	// 수강신청등록_강의명(select)
+	public LctreVO selectReqstForm(LctreVO paramVO){
+		return lctreDAO.selectReqstForm(paramVO);
+	}
+	
+	// 수강신청등록
+	public void insertReqstForm(ReqstVO paramVO){
+		lctreDAO.insertReqstForm(paramVO);
 	}
 	
 	

@@ -56,5 +56,13 @@ public class LctreDAO extends EgovComAbstractDAO {
 		update("LctreDAO.deleteLctre", paramVO);
 	}
 	
+	// 수강신청등록_강의명 select
+	public LctreVO selectReqstForm(LctreVO paramVO){
+		return (LctreVO)select("LctreDAO.selectReqstForm", paramVO);
+	}
 	
+	// 수강신청등록
+	public void insertReqstForm(ReqstVO paramVO){
+		insert("LctreDAO.insertReqstForm", paramVO);
+	}
 }

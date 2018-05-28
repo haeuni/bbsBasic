@@ -28,4 +28,10 @@ public interface LctreService {
 	
 	// 강의삭제
 	public void deleteLctre(LctreVO paramVO);
+	
+	// 수강신청등록_강의명(select)
+	public LctreVO selectReqstForm(LctreVO pramaVO);
+	
+	// 수강신청등록
+	public void insertReqstForm(ReqstVO paramVO);
 }

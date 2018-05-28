@@ -168,6 +168,38 @@ public class LctreController {
 		return "redirect:/edu/lctre/selectLctreList.do";
 	}
 	
+	// 수강신청등록폼_강의명(select)
+	@RequestMapping("/edu/lctre/selectReqstForm.do")
+	public String selectReqstForm(HttpServletRequest request			
+			, @ModelAttribute(value="paramVO") LctreVO paramVO
+			, ModelMap model) throws Exception{
+		
+		try{
+			// 해당 강의번호를 파라미터값으로 넘겨 그에 해당하는 강의명 select 해서 폼에 뿌려주기
+			LctreVO ReqstLctreNm = lctreService.selectReqstForm(paramVO);
+			model.addAttribute("ReqstLctreNm", ReqstLctreNm);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return "/edu/lctre/reqstForm";
+	}
+	
+	// 수강신청등록폼 --> 등록
+	@RequestMapping("/edu/lctre/insertReqstForm.do")
+	public String insertReqstForm(HttpServletRequest request
+			, @ModelAttribute(value="paramVO") ReqstVO paramVO
+			, ModelMap model) throws Exception{
+		
+		try{
+			// 파라미터에 담긴 등록폼에서 작성한 값들을 넘기기		
+			lctreService.insertReqstForm(paramVO);		
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return "redirect:/edu/lctre/selectLctreList.do";
+	}
 	
 }
 	
