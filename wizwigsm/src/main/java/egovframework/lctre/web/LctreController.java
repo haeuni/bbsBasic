@@ -29,12 +29,7 @@ public class LctreController {
 			, ModelMap model) throws Exception{
 		
 		try{		
-			
-			// 모집 COUNT
-			// reqstCntList에는 신청자수가 담긴다.
-			/*List<LctreVO> reqstCntList = lctreService.selectReqstCnt(paramVO);
-			model.addAttribute("reqstCntList", reqstCntList);*/
-			
+					
 			// 목록리스트
 			List<LctreVO> lctreList = lctreService.selectLctreList(paramVO);
 			model.addAttribute("lctreList", lctreList);
@@ -96,10 +91,42 @@ public class LctreController {
 			LctreVO lctreDetail = lctreService.selectLctreDetail(paramVO);		
 			model.addAttribute("lctreDetail", lctreDetail);
 			
+			// 상세_신청목록
+			List<ReqstVO> reqstDetail = lctreService.selectReqstList(paramVO);
+			model.addAttribute("reqstDetail", reqstDetail);
+			
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 		return "/edu/lctre/lctreDetail";
+	}
+	
+	// 강의상세_신청상태 저장
+	@RequestMapping("/edu/lctre/modReqstForm.do")
+	public String updateReqstForm(HttpServletRequest request
+			, @ModelAttribute(value="paramVO") ReqstVO paramVO
+			, ModelMap model) throws Exception{
+		
+		try{
+			System.out.println("#########################################"+request.getParameter("reqstNumArr"));
+			System.out.println("#########################################"+request.getParameter("reqstSttusArr"));
+			
+			// 예상되는 데이터 값 {"26","25","24","23","22"}
+			// 				{"C","C","C","C","C"}
+			String[] reqstNumArr = request.getParameter("reqstNumArr").split("/");
+			String[] reqstSttusArr = request.getParameter("reqstSttusArr").split("/");			
+			
+			for(int i=0; i<reqstNumArr.length; i++){
+				paramVO.setReqst_seq(reqstNumArr[i]);
+				paramVO.setLctre_sttus(reqstSttusArr[i]);
+				
+				lctreService.modReqstSttus(paramVO);
+			}						
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return "forward:/edu/lctre/selectLctreList.do";
 	}
 	
 	// 강의수정폼

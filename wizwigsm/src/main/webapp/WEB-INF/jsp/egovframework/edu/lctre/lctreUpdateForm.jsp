@@ -63,8 +63,8 @@ function fnUpdate(){
 								<!-- 변수 'result'에 넘겨진 강사리스트를 옵션의 value값으로 출력한다. / items에 담겨진 강사번호(instrctr_seq)를 넘긴다. -->				
 								<option value="${result.instrctr_seq}"
 								
-									<!-- 옵션에 보여줄 강사를 조건을 걸어준다. / 불러온 강사의 seq와 강사테이블의 강사seq와 같은 강사 -->
-									<!-- 사용자 view에서는 강사명을 보여준다. -->
+									<%--  옵션에 보여줄 강사를 조건을 걸어준다. / 불러온 강사의 seq와 강사테이블의 강사seq와 같은 강사
+									사용자 view에서는 강사명을 보여준다.--%>
 									<c:if test="${result.instrctr_seq eq lctreDetail.instrctr_seq}">selected</c:if>>${result.instrctr_nm}
 								</option>
 							</c:forEach>

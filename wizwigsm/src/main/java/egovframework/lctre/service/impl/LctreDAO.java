@@ -16,11 +16,6 @@ public class LctreDAO extends EgovComAbstractDAO {
 		return (List<LctreVO>)list("LctreDAO.selectLctreList", paramVO);	
 	}		
 	
-	// 강의목록_모집_신청테이블에서 해당 강의번호에 해당하는 신청 seq 얻어오기 --> 얻어와야 할 값 (= 강의번호, lctre_seq)
-/*	public List<LctreVO> selectReqstCnt(LctreVO paramVO){
-		return (List<LctreVO>)list("LctreDAO.selectReqstCnt", paramVO);
-	}
-	*/
 	// 강의등록_comboBox 
 	public List<LctreVO> selectInstrctrNmCobList(LctreVO paramVO){
 		return (List<LctreVO>)list("LctreDAO.selectInstrctrNmCobList", paramVO);
@@ -45,6 +40,16 @@ public class LctreDAO extends EgovComAbstractDAO {
 	public LctreVO selectLctreDetail(LctreVO paramVO){		
 		return (LctreVO)select("LctreDAO.selectLctreDetail", paramVO);
 	}		
+	
+	// 강의상세_신청목록
+	public List<ReqstVO> selectReqstList(LctreVO paramVO){
+		return (List<ReqstVO>)list("LctreDAO.selectReqstList", paramVO);
+	}
+	
+	// 강의상세_신청목록_신청상태 저장
+	public void modReqstSttus(ReqstVO paramVO){
+		update("LctreDAO.modReqstSttus", paramVO);
+	}
 	
 	// 강의수정
 	public void updateLctre(LctreVO paramVO){		

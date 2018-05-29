@@ -6,6 +6,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <style>
+	table{
+		text-align: center;	
+	}
 	h3{
 		color : #4c4a4a;
 	}
@@ -41,6 +44,7 @@ function fnLctreForm(){
 	frm.submit();
 }
 
+/* 상세보기 */
 function fnDetail(lctre_seq){
 	var frm = document.frm;
 	frm.lctre_seq.value = lctre_seq;
@@ -86,9 +90,9 @@ function fnDetail(lctre_seq){
 				<c:out value="${result.rdcnt}"/>
 			</td>
 			
-			<!-- 모집 -->
+			<!-- 모집 (현재신청자수/모집인원수)-->
 			<td>			
-				<c:out value="${result.reqst_cnt}"/> / <c:out value="${result.rcrundt}"/>
+				<c:out value="${result.reqst_cnt}"/>/<c:out value="${result.rcrundt}"/>
 			</td>			
 			
 			<!-- 비고 -->

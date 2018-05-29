@@ -53,6 +53,16 @@ public class LctreServiceImpl extends EgovAbstractServiceImpl implements LctreSe
 		return lctreDAO.selectLctreDetail(paramVO);
 	}	
 	
+	// 강의상세_신청목록
+	public List<ReqstVO> selectReqstList(LctreVO paramVO){
+		return lctreDAO.selectReqstList(paramVO);
+	}
+	
+	// 강의상세_신청목록_신청상태 저장
+	public void modReqstSttus(ReqstVO paramVO){
+		lctreDAO.modReqstSttus(paramVO);
+	}
+	
 	// 강의수정
 	public void updateLctre(LctreVO paramVO){
 		lctreDAO.updateLctre(paramVO);
