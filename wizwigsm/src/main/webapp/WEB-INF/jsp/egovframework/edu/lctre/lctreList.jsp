@@ -15,8 +15,19 @@
 	th{
 		background-color: #cecece;
 	}
-	#lctreBtn{
-		background-color : #e91e63;
+	#lctreBtnC{
+		background-color : blue;
+		color : white; 		
+		font-weight: bold;	
+		
+	}
+	#lctreBtnR{
+		background-color : green;
+		color : white; 		
+		font-weight: bold;	
+	}
+	#lctreBtnN{
+		background-color : red;
 		color : white; 		
 		font-weight: bold;	
 	}
@@ -27,13 +38,18 @@
 	}
 </style>
 <script type="text/javascript">
-alert(reqstCntList);	// test
-
-/* 신청등록버튼 */
+/* 접수가능 버튼 */
 function fnReqstForm(lctre_seq){	
-	var frm = document.frm;
+	var frm = document.frm;	
 	frm.lctre_seq.value = lctre_seq;
 	frm.action= "/edu/lctre/selectReqstForm.do";
+	frm.submit();
+}
+/* 접수중 버튼 */
+function fnReqstList(lctre_seq){	
+	var frm = document.frm;
+	frm.lctre_seq.value = lctre_seq;
+	frm.action= "/edu/lctre/selectReqstList.do";
 	frm.submit();
 }
 
@@ -51,6 +67,7 @@ function fnDetail(lctre_seq){
 	frm.action = "/edu/lctre/selectLctreDetail.do";
 	frm.submit();
 }
+
 </script>
 </head>
 <body>
@@ -71,39 +88,37 @@ function fnDetail(lctre_seq){
 		<c:forEach var="result" items="${lctreList}" >
 		<tr>
 			<!-- 강의번호 -->
-			<td>
-				<c:out value="${result.lctre_seq}"/>
-			</td>
+			<td><c:out value="${result.lctre_seq}"/></td>
 			
 			<!-- 강의명 -->
-			<td>
-				<a href="javascript:void(0);" onclick="fnDetail('${result.lctre_seq}');"><c:out value="${result.lctre_nm}"/></a>
-			</td>
+			<td><a href="javascript:void(0);" onclick="fnDetail('${result.lctre_seq}');"><c:out value="${result.lctre_nm}"/></a></td>
 			
 			<!-- 강사명 -->
-			<td>
-				<c:out value="${result.instrctr_nm}"/>
-			</td>
+			<td><c:out value="${result.instrctr_nm}"/></td>
 			
 			<!-- 조회수 -->
-			<td>
-				<c:out value="${result.rdcnt}"/>
-			</td>
+			<td><c:out value="${result.rdcnt}"/></td>
 			
 			<!-- 모집 (현재신청자수/모집인원수)-->
-			<td>			
-				<c:out value="${result.reqst_cnt}"/>/<c:out value="${result.rcrundt}"/>
-			</td>			
+			<td><c:out value="${result.reqst_cnt}"/>/<c:out value="${result.rcrundt}"/></td>							
 			
 			<!-- 비고 -->
 			<td>
-				<button onclick="fnReqstForm('${result.lctre_seq}');" id="lctreBtn">수강신청</button>
+				<c:choose>	
+					<c:when test="${result.lctre_sttus == 'R'}">				
+							<button onclick="fnReqstForm('${result.lctre_seq}');" id="lctreBtnC">접수가능</button>
+					</c:when>
+					<c:when test="${result.lctre_sttus == 'R'}">		
+							<button onclick="fnReqstList('${result.lctre_seq}');" id="lctreBtnR">접수중</button>
+					</c:when>
+					<c:when test="${result.lctre_sttus == 'N'}">
+							<button id="lctreBtnN" disabled="disabled">접수종료</button>
+					</c:when>				
+				</c:choose>
 			</td>
 			
 			<!-- 등록일 -->
-			<td id="date">
-				<c:out value="${result.frst_regist_pnttm}"/>
-			</td>
+			<td id="date"><c:out value="${result.frst_regist_pnttm}"/></td>
 		</tr>
 		</c:forEach>
 		<tr>

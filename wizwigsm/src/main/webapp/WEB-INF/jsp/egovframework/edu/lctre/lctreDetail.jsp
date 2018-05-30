@@ -21,7 +21,6 @@
 	}
 </style>
 <script type="text/javascript">
-alert("게시판글번호 : " + "${lctreDetail.lctre_seq}");
 
 /* 강의목록 */
 function fnList(){
@@ -48,8 +47,6 @@ function fnSubmit(){
 	var target = document.getElementById("selLctreSttus");	/* selectbox */
 	var reqstNumArr = "";
 	var reqstSttusArr = "";	
-	
-	alert(frm.reqst_seq[1].value);
 	
 	/* 슬래시로 구분지어 하나의 문자열로 넘겨주기위함 */
  	for(var i=0; i<'${fn:length(reqstDetail)}'; i++){
@@ -128,6 +125,6 @@ function fnSubmit(){
 				</td>
 			</tr>			
 		</table>
-	</div>
+	</form>
 </body>
 </html>

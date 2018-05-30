@@ -9,10 +9,7 @@ public class ReqstVO {
 	private String lctre_sttus; //신청상태  ('N' or 'C')
 	private String frst_regist_pnttm; //최초등록일시
 	private String last_regist_pnttm; //최종수정일시
-	
-	//private String reqstNumArr;		// 신청상태번호
-	//private String reqstSttusArr;	// 신청상태처리
-	
+		
 	public String getReqst_seq() {
 		return reqst_seq;
 	}
@@ -49,17 +46,4 @@ public class ReqstVO {
 	public void setLast_regist_pnttm(String last_regist_pnttm) {
 		this.last_regist_pnttm = last_regist_pnttm;
 	}
-	/*public String getReqstNumArr() {
-		return reqstNumArr;
-	}
-	public void setReqstNumArr(String reqstNumArr) {
-		this.reqstNumArr = reqstNumArr;
-	}
-	public String getReqstSttusArr() {
-		return reqstSttusArr;
-	}
-	public void setReqstSttusArr(String reqstSttusArr) {
-		this.reqstSttusArr = reqstSttusArr;
-	}
-	*/
 }

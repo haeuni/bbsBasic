@@ -23,7 +23,7 @@ public interface LctreService {
 	// 강의상세
 	public LctreVO selectLctreDetail(LctreVO paramVO);
 	
-	// 강의상세_신청목록
+	// 강의목록_신청목록
 	public List<ReqstVO> selectReqstList(LctreVO paramVO);
 	
 	// 강의상세_신청상태 저장

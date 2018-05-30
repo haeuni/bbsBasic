@@ -6,8 +6,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script>
-alert("게시판글번호 : " + "${lctreDetail.lctre_seq}");
-
 /* 목록으로 넘겨줄 스크립트 */
 function fnList(){	
 	var frm = document.frm;

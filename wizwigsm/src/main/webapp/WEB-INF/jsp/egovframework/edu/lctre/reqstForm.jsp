@@ -20,7 +20,7 @@ function fnSubmit(lctre_seq){
 </script>
 </head>
 <body>
-	<h3>신청등록</h3>
+	<h3>강의신청</h3>
 	<form id="frm" name="frm" method="post">
 		<input type="hidden" id="lctre_seq" name="lctre_seq" />
 		<table border="1">
@@ -29,7 +29,7 @@ function fnSubmit(lctre_seq){
 				<td>		
 					<c:out value="${ReqstLctreNm.lctre_nm}"/>				
 				</td>	
-			</tr>
+			</tr>			
 			<tr>
 				<th>신청자</th>
 				<td><input type="text" id="applcnt_nm" name="applcnt_nm"/></td>	

@@ -22,6 +22,7 @@
 								WHERE 1=1
 								AND REQ.LCTRE_STTUS = 'C'
 								AND REQ.LCTRE_SEQ = LCT.LCTRE_SEQ) AS REQST_CNT
+				    , LCT.LCTRE_STTUS
             FROM T_LCTRE LCT, T_INSTRCTR INS
             WHERE 1=1 
             AND LCT.INSTRCTR_SEQ = INS.INSTRCTR_SEQ
@@ -53,7 +54,10 @@
 				, FRST_REGIST_PNTTM
 				, LAST_UPDT_PNTTM
 				, USE_AT
-				, RDCNT)
+				, RDCNT
+				, LCTRE_BEGIN
+				, LCTRE_ENDDE
+				, LCTRE_STTUS)
 			VALUES
 				(SEQ_LCTRE.NEXTVAL				
 				, #lctre_nm#
@@ -62,7 +66,10 @@
 				, SYSDATE
 				, SYSDATE
 				,'Y'
-				, 0)
+				, 0
+				, #lctre_begin#
+				, #lctre_endde#
+				, #lctre_sttus#)
 		]]>
 	</insert>
 	

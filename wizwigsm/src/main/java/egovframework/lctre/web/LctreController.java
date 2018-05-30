@@ -28,8 +28,7 @@ public class LctreController {
 			, @ModelAttribute(value="paramVO") LctreVO paramVO
 			, ModelMap model) throws Exception{
 		
-		try{		
-					
+		try{							
 			// 목록리스트
 			List<LctreVO> lctreList = lctreService.selectLctreList(paramVO);
 			model.addAttribute("lctreList", lctreList);
