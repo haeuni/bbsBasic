@@ -13,9 +13,9 @@ public class LctreVO {
 	private String rdcnt;	//조회수
 	private String use_at;	//삭제여부
 	private String lctre_begin;	// 강의시작일
-	private String lctre_endde; // 강의종료일	
-	private String lctre_sttus; // 강의상태
+	private String lctre_endde; // 강의종료일
 	
+	private String lctre_sttus; // 강의상태
 	private String reqst_cnt;	// 신청 count한 값
 
 	public String getLctre_seq() {

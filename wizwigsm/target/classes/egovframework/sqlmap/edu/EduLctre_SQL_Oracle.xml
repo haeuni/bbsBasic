@@ -22,6 +22,8 @@
 								WHERE 1=1
 								AND REQ.LCTRE_STTUS = 'C'
 								AND REQ.LCTRE_SEQ = LCT.LCTRE_SEQ) AS REQST_CNT
+				    , LCT.LCTRE_BEGIN
+                    , LCT.LCTRE_ENDDE
 				    , LCT.LCTRE_STTUS
             FROM T_LCTRE LCT, T_INSTRCTR INS
             WHERE 1=1 

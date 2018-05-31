@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -71,6 +72,12 @@ function fnDetail(lctre_seq){
 </script>
 </head>
 <body>
+	<!-- 오늘날짜 -->
+	<c:set var="today" value="<%=new java.util.Date()%>" />	
+	<!-- 현재날짜타입을 해당패턴으로 변환 -->
+	<fmt:formatDate var="now" type="date" value="${today}" pattern="yyyyMMdd"/>	
+	Today Date :  ${now}<br>
+
 	<form id="frm" name="frm" method="post">		
 		<input type="hidden" id="lctre_seq" name="lctre_seq" />	
 	
@@ -86,7 +93,6 @@ function fnDetail(lctre_seq){
 			<th>등록일</th>			
 		</tr>		
 		<c:forEach var="result" items="${lctreList}" >
-		<tr>
 			<!-- 강의번호 -->
 			<td><c:out value="${result.lctre_seq}"/></td>
 			
@@ -103,18 +109,16 @@ function fnDetail(lctre_seq){
 			<td><c:out value="${result.reqst_cnt}"/>/<c:out value="${result.rcrundt}"/></td>							
 			
 			<!-- 비고 -->
-			<td>
-				<c:choose>	
-					<c:when test="${result.lctre_sttus == 'R'}">				
-							<button onclick="fnReqstForm('${result.lctre_seq}');" id="lctreBtnC">접수가능</button>
-					</c:when>
-					<c:when test="${result.lctre_sttus == 'R'}">		
-							<button onclick="fnReqstList('${result.lctre_seq}');" id="lctreBtnR">접수중</button>
-					</c:when>
-					<c:when test="${result.lctre_sttus == 'N'}">
-							<button id="lctreBtnN" disabled="disabled">접수종료</button>
-					</c:when>				
-				</c:choose>
+			<td>					
+				<c:if test="${result.lctre_sttus eq 'R' && now lt result.lctre_begin}">				
+					<button onclick="fnReqstForm('${result.lctre_seq}');" id="lctreBtnC">접수가능</button>
+				</c:if>
+				<c:if test="${result.lctre_sttus eq 'R' && now ge result.lctre_begin && now le result.lctre_endde}">		
+					<button onclick="fnReqstList('${result.lctre_seq}');" id="lctreBtnR">접수중</button>
+				</c:if>
+				<c:if test="${result.lctre_sttus eq 'N' && now lt result.lctre_begin}">
+					<button onclick="fnReqstList('${result.lctre_seq}');"  id="lctreBtnN">접수종료</button>
+				</c:if>		
 			</td>
 			
 			<!-- 등록일 -->
