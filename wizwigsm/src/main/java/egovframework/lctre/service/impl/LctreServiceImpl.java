@@ -23,11 +23,21 @@ public class LctreServiceImpl extends EgovAbstractServiceImpl implements LctreSe
 		return lctreDAO.selectLctreList(paramVO);
 	} 
 	
-/*	// 강의목록_모집 COUNT
-	public List<LctreVO> selectReqstCnt(LctreVO paramVO){
-		return lctreDAO.selectReqstCnt(paramVO);
+	// 강의목록_신청목록(접수중, 접수종료버튼 클릭시)
+	public List<ReqstVO> selectReqstBtnList(LctreVO paramVO){
+		return lctreDAO.selectReqstBtnList(paramVO);
+	}	
+	
+	// 강의목록_신청목록_삭제
+	public void modReqstBtnList(ReqstVO paramVO){
+		lctreDAO.modReqstBtnList(paramVO);
 	}
-	*/
+	
+	// 강의목록_모집 COUNT
+	// public List<LctreVO> selectReqstCnt(LctreVO paramVO){
+	//	return lctreDAO.selectReqstCnt(paramVO);
+	//}
+	
 	// 강의등록_comboBox 
 	public List<LctreVO> selectInstrctrNmCobList(LctreVO paramVO){
 		return lctreDAO.selectInstrctrNmCobList(paramVO);

@@ -8,8 +8,11 @@ public interface LctreService {
 	// 강의목록
 	public List<LctreVO> selectLctreList(LctreVO paramVO);
 	
-	// 강의목록_모집 COUNT
-	// public List<LctreVO> selectReqstCnt(LctreVO paramVO);
+	// 강의목록_신청목록(접수중, 접수종료버튼 클릭시)
+	public List<ReqstVO> selectReqstBtnList(LctreVO paramVO);	
+	
+	// 강의목록_신청목록_삭제
+	public void modReqstBtnList(ReqstVO paramVO);
 	
 	// 강의등록_comboBox
 	public List<LctreVO> selectInstrctrNmCobList(LctreVO paramVO);

@@ -22,7 +22,7 @@ public class LctreController {
 	@Resource(name = "LctreService")
 	private LctreService lctreService;
 	
-	// 목록
+	// 강의목록
 	@RequestMapping("/edu/lctre/selectLctreList.do")
 	public String selectLctreList(HttpServletRequest request			
 			, @ModelAttribute(value="paramVO") LctreVO paramVO
@@ -33,12 +33,67 @@ public class LctreController {
 			List<LctreVO> lctreList = lctreService.selectLctreList(paramVO);
 			model.addAttribute("lctreList", lctreList);
 			
+			//lctreService.selectLctreList(paramVO);
+			
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 		return "/edu/lctre/lctreList";
+	}	
+	// 강의목록_체크삭제버튼
+	@RequestMapping("/edu/lctre/deleteLctreList.do")
+	public String deleteLctreList(HttpServletRequest request			
+			, @ModelAttribute(value="paramVO") LctreVO paramVO
+			, ModelMap model) throws Exception{
+		
+		try{	
+			
+			System.out.println("#########################################"+request.getParameter("chkInfoArr"));			
+			String[] chkInfoArr = request.getParameter("chkInfoArr").split("/");		
+			
+			for(int i=0; i<chkInfoArr.length; i++){		
+				
+				paramVO.setLctre_seq(chkInfoArr[i]);
+				lctreService.deleteLctre(paramVO);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return "redirect:/edu/lctre/selectLctreList.do";
+	}	
+	
+	// 강의목록_신청자목록 (접수중/접수종료 버튼 클릭시)
+	@RequestMapping("/edu/lctre/selectReqstBtnList.do")
+	public String selectReqstBtnList(HttpServletRequest request			
+			, @ModelAttribute(value="paramVO") LctreVO paramVO
+			, ModelMap model) throws Exception{
+		
+		try{							
+			// 신청자 목록리스트
+			List<ReqstVO> ReqstBtnList = lctreService.selectReqstBtnList(paramVO);
+			model.addAttribute("ReqstBtnList", ReqstBtnList);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return "/edu/lctre/reqstList";
 	}
-
+	
+	// 신청자목록_삭제버튼 (신청상태 'C' -> 'N')
+	@RequestMapping("/edu/lctre/modReqstBtnList.do")
+	public String modReqstBtnList(HttpServletRequest request
+			, @ModelAttribute(value="paramVO") ReqstVO paramVO
+			, ModelMap model) throws Exception{
+		
+		try{			
+				lctreService.modReqstBtnList(paramVO);							
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return "redirect:/edu/lctre/selectLctreList.do";
+	}
+	
 	// 강의등록폼
 	@RequestMapping("/edu/lctre/selectLctreForm.do")
 	public String selectLctreForm(HttpServletRequest request			
@@ -99,10 +154,10 @@ public class LctreController {
 		}
 		return "/edu/lctre/lctreDetail";
 	}
-	
-	// 강의상세_신청상태 저장
+		
+	// 강의상세_신청목록_신청상태 저장
 	@RequestMapping("/edu/lctre/modReqstForm.do")
-	public String updateReqstForm(HttpServletRequest request
+	public String modReqstForm(HttpServletRequest request
 			, @ModelAttribute(value="paramVO") ReqstVO paramVO
 			, ModelMap model) throws Exception{
 		
@@ -155,8 +210,7 @@ public class LctreController {
 		}
 		
 		return "/edu/lctre/lctreUpdateForm";
-	}
-	
+	}	
 	
 	// 강의수정처리
 	@RequestMapping("/edu/lctre/updateLctre.do")

@@ -6,6 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
 <style>
 	table{
 		width : 500px;
@@ -21,6 +22,22 @@
 	}
 </style>
 <script type="text/javascript">
+/* 신청인원 버튼 */
+function fnCnt(lctre_seq){
+	var frm = document.frm;
+	var reqstListDiv = document.getElementById("reqstListDiv")
+
+	if(reqstListDiv.style.display == ""){
+		reqstListDiv.style.display = "none";
+	}
+	else if(reqstListDiv.style.display == "none"){
+		reqstListDiv.style.display = "";
+	}
+	
+	/* frm.lctre_seq.value = lctre_seq;
+	frm.action = "/edu/lctre/selectReqstBtnList.do";
+	frm.submit(); */
+}
 /* 강의목록 */
 function fnList(){
 	var frm = document.frm;
@@ -39,6 +56,25 @@ function fnSttus(){
 	var frm = document.frm;
 	var target = document.getElementById("selLctreSttus");
 	frm.lctre_sttus.value = target.options[target.selectedIndex].value;
+}
+/* 신청상태저장 */
+function fnSubmit(){
+	var frm = document.frm;  	/* 폼 */
+	var target = document.getElementById("selLctreSttus");	/* selectbox */
+	var reqstNumArr = "";
+	var reqstSttusArr = "";	
+	
+	/* 슬래시로 구분지어 하나의 문자열로 넘겨주기위함 */
+ 	for(var i=0; i<'${fn:length(reqstDetail)}'; i++){	
+ 		reqstNumArr += frm.reqst_seq[i].value + "/";	/* (ex) 26/25/24/23 */
+ 		reqstSttusArr += frm.selLctreSttus[i].value + "/"; 		/* (ex) C/R/C/N/C */
+    }
+	
+ 	frm.reqstNumArr.value = reqstNumArr;
+ 	frm.reqstSttusArr.value = reqstSttusArr;
+ 		
+	frm.action = "/edu/lctre/modReqstForm.do";
+	frm.submit();
 }
 </script>
 </head>
@@ -62,10 +98,21 @@ function fnSttus(){
 			<tr>	
 				<th>모집인원</th>
 				<td>
-					<c:out value="${lctreDetail.reqst_cnt}"/>/<c:out value="${lctreDetail.rcrundt}"/>
+					<c:out value="${lctreDetail.rcrundt}"/>
 				</td>
 				<th>조회수</th>
 				<td><c:out value="${lctreDetail.rdcnt}"/></td>
+			</tr>
+			<tr>	
+				<th>강의상태</th>
+				<td>
+					<c:choose>	
+					    <c:when test="${lctreDetail.lctre_sttus eq 'R'}">접수중</c:when>	
+					    <c:otherwise>접수종료</c:otherwise>	
+					</c:choose>
+				</td>
+				<th>신청인원</th>
+				<td><input type="button" id="reqst_cnt" name="reqst_cnt" value="${lctreDetail.reqst_cnt}" onclick="javascript:fnCnt();"/></td>
 			</tr>
 			<tr>
 				<td colspan="2"></td>
@@ -74,59 +121,39 @@ function fnSttus(){
 			</tr>
 		</table>
 		
-		<h3>신청목록</h3>
-		<table border="1">
-			<tr>
-				<th>번호</th>
-				<th>신청자</th>
-				<th>신청일</th>
-				<th>신청상태</th>
-			</tr>
-			<c:forEach var="result" items="${reqstDetail}">
-				<input type="hidden" id="reqst_seq" name="reqst_seq" value="${result.reqst_seq}"/>
+		<div id="reqstListDiv" style="display: none;">
+			<h3>신청목록</h3>
+			<table border="1">
 				<tr>
-					<td><c:out value="${result.reqst_seq}"/></td>
-					<td><c:out value="${result.applcnt_nm}"/></td>
-					<td><c:out value="${result.frst_regist_pnttm}"/></td>
-					<!-- 신청상태 (완료:C / 신청중:R / 취소:N) -->
-					<td>
-						<select name="selLctreSttus" id="selLctreSttus" onchange="fnSttus();">
-							<option value="C">신청완료</option>
-							<option value="R">신청중</option>
-							<option value="N">신청취소</option>
-						</select>				
-					</td>
+					<th>번호</th>
+					<th>신청자</th>
+					<th>신청일</th>
+					<th>신청상태</th>
 				</tr>
-			</c:forEach>	
-			<tr>		
-				<td colspan="3"></td>
-				<td colspan="1">
-					<input type="button" onclick="fnSubmit();" value="저장" class="formBtn"/>
-				</td>
-			</tr>			
-		</table>
+				<c:forEach var="result" items="${reqstDetail}">
+					<input type="hidden" id="reqst_seq" name="reqst_seq" value="${result.reqst_seq}"/>
+					<tr>
+						<td><c:out value="${result.reqst_seq}"/></td>
+						<td><c:out value="${result.applcnt_nm}"/></td>
+						<td><c:out value="${result.frst_regist_pnttm}"/></td>
+						<!-- 신청상태 (완료:C / 신청중:R / 취소:N) -->
+						<td>
+							<select name="selLctreSttus" id="selLctreSttus" onchange="fnSttus();">
+								<option value="C">신청완료</option>
+								<option value="R">신청중</option>
+								<option value="N">신청취소</option>
+							</select>				
+						</td>
+					</tr>
+				</c:forEach>	
+				<tr>		
+					<td colspan="3"></td>
+					<td colspan="1">
+						<input type="button" onclick="fnSubmit();" value="저장" class="formBtn"/>
+					</td>
+				</tr>			
+			</table>
+		</div>
 	</form>
-	
-	<script type="text/javascript">
-	/* 신청상태저장 */
-	function fnSubmit(){
-		var frm = document.frm;  	/* 폼 */
-		var target = document.getElementById("selLctreSttus");	/* selectbox */
-		var reqstNumArr = "";
-		var reqstSttusArr = "";	
-		
-		/* 슬래시로 구분지어 하나의 문자열로 넘겨주기위함 */
-	 	for(var i=0; i<'${fn:length(reqstDetail)}'; i++){	
-	 		reqstNumArr += frm.reqst_seq.value + "/";	/* (ex) 26/25/24/23 */
-	 		reqstSttusArr += frm.selLctreSttus.value + "/"; 		/* (ex) C/R/C/N/C */
-	    }
-		
-	 	frm.reqstNumArr.value = reqstNumArr;
-	 	frm.reqstSttusArr.value = reqstSttusArr;
-	 		
-		frm.action = "/edu/lctre/modReqstForm.do";
-		frm.submit();
-	}
-	</script>
 </body>
 </html>

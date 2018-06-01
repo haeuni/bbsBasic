@@ -16,6 +16,16 @@ public class LctreDAO extends EgovComAbstractDAO {
 		return (List<LctreVO>)list("LctreDAO.selectLctreList", paramVO);	
 	}		
 	
+	// 강의목록_신청목록(접수중, 접수종료버튼 클릭시)
+	public List<ReqstVO> selectReqstBtnList(LctreVO paramVO){
+		return (List<ReqstVO>) list("LctreDAO.selectReqstBtnList", paramVO);
+	}
+	
+	// 강의목록_신청목록_삭제
+	public void modReqstBtnList(ReqstVO paramVO){
+		update("LctreDAO.modReqstBtnList", paramVO);
+	}
+	
 	// 강의등록_comboBox 
 	public List<LctreVO> selectInstrctrNmCobList(LctreVO paramVO){
 		return (List<LctreVO>)list("LctreDAO.selectInstrctrNmCobList", paramVO);
