@@ -43,7 +43,17 @@ public class LctreController {
 			// 게시글 총 갯수를 가져오는 메소드를 실행
 			int listCount = lctreService.selectListTotalCount();
 			System.out.println("listCount : " + listCount + "################# ");        
-						
+					
+			int startRow = (nowPage-1) * listLimit + 1;	// 한페이지의 시작글 번호 (ex) (1-1)*10+1 = 1
+		 	//int endRow = nowPage + (listLimit -1);		// 한페이지의 마지막 글번호 (ex) 1+(10-1) = 10		 	
+		 	int endRow = nowPage * listLimit;
+			
+			if(listCount > 0){				// 목록 글이 있을 때,
+				if(endRow > listCount){		// 10개의 목록리스트를 뽑기위해 마지막row를 총row로 
+					endRow = listCount;			
+				}
+			}			
+			
 			// 전체 페이지중 마지막 페이지                                                                                                                                                       
 			// (ex) 게시글이  listCount / listLimit가  딱 나누어 떨어질 때 +1을 해버리면 남는 페이지가 1개 생겨버림 
 			//		때문에 최대한 1에 가깝지만 0을 더해서는 올림이 되지 않도록 0.95를 더함.                                                                                                                                                   
@@ -58,15 +68,17 @@ public class LctreController {
 			
 			if(endPage > maxPage) {                                                                            
 			    endPage = maxPage;                                                                               
-			}                                                                                               	
+			}                                                                                           	
 			
 			paramVO.setNowPage(nowPage);
 			paramVO.setStartPage(startPage);
 			paramVO.setEndPage(endPage);
 			paramVO.setMaxPage(maxPage);		
 			paramVO.setListLimit(listLimit);
+			paramVO.setStartRow(startRow);
+			paramVO.setEndRow(endRow);
 			
-			System.out.println(nowPage+ "/" +startPage + "/" +endPage + "/" +maxPage + "/" +listLimit);
+			System.out.println(nowPage+ "/" +startPage + "/" +endPage + "/" +maxPage + "/" +listLimit+ "/" +startRow+ "/" +endRow);
 			
 			// 해당 페이지에 출력될 게시글을 listLimit 만큼만 가져오기 위한 메소드                                                      
 			List<LctreVO> lctreList = lctreService.selectLctreList(paramVO);                                                

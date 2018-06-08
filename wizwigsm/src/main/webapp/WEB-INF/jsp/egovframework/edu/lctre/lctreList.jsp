@@ -113,6 +113,15 @@ function fnDetail(lctre_seq){
 	frm.action = "/edu/lctre/selectLctreDetail.do";
 	frm.submit();
 }
+
+/* 페이징 */
+function fnPage(page){
+	var frm = document.frm;
+	frm.nowPage.value = page;
+	frm.action = "/edu/lctre/deleteLctreList.do";
+	frm.submit();
+}
+
 </script>
 </head>
 <body>
@@ -125,6 +134,7 @@ function fnDetail(lctre_seq){
 	<form id="frm" name="frm" method="post">		
 		<input type="hidden" id="lctre_seq" name="lctre_seq" />	
 		<input type="hidden" id="chkInfoArr" name="chkInfoArr" />
+		<input type="hidden" id="nowPage" name="nowPage" />
 		
 		<h3>강의목록</h3>
 		<table border="1">
@@ -194,7 +204,7 @@ function fnDetail(lctre_seq){
 			
 		<!-- 이전 페이지 표시 -->                                                                 
 		<c:choose>                                                                         
-		    <c:when test="${pageVO.nowPage eq 1 }"></c:when>                                                                      
+		    <c:when test="${pageVO.nowPage eq 1}"></c:when>                                                                      
 		    <c:otherwise>                                                                  
 		        <a href="/edu/lctre/selectLctreList.do?nowPage=${pageVO.nowPage-1}">[이전]</a> 
 		    </c:otherwise>                                                                 
@@ -205,7 +215,7 @@ function fnDetail(lctre_seq){
 		    <c:choose >                                                                    
 		        <c:when test="${pageVO.nowPage eq page}">${page}</c:when>                                                                                                                             
 		        <c:otherwise>                                                       
-		            <a href="/edu/lctre/selectLctreList.do?nowPage=${page}" style="color:#cecece;">${page}</a>      
+		            <a href="/edu/lctre/selectLctreList.do?nowPage=${page}" onclick="fnPage('${page}');" style="color:#cecece;">${page}</a>      
 		        </c:otherwise>                                                             
 		    </c:choose>                                                                    
 		</c:forEach>                                                                             

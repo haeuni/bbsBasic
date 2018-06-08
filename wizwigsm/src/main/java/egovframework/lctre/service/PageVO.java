@@ -9,6 +9,9 @@ public class PageVO {
 		private int maxPage;   		// 전체 페이지에서 가장 마지막 페이지
 		private int listLimit;     	// 한 페이지에 게시글일 몇개가 보여질지 표시.
 				
+		private int startRow; 		// 한 페이지의 시작글번호  (ex) 1
+		private int endRow;			// 한 페이지의 마지막글번호 (ex) 10
+
 		public int getNowPage() {
 			return nowPage;
 		}
@@ -38,6 +41,18 @@ public class PageVO {
 		}
 		public void setListLimit(int listLimit) {
 			this.listLimit = listLimit;
-		}		
+		}
+		public int getStartRow() {
+			return startRow;
+		}
+		public void setStartRow(int startRow) {
+			this.startRow = startRow;
+		}
+		public int getEndRow() {
+			return endRow;
+		}
+		public void setEndRow(int endRow) {
+			this.endRow = endRow;
+		}
 		
 }
