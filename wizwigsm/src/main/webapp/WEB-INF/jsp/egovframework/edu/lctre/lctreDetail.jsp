@@ -63,9 +63,9 @@ function fnSubmit(){
 	var target = document.getElementById("selLctreSttus");	/* selectbox */
 	var reqstNumArr = "";
 	var reqstSttusArr = "";	
-	
+
 	/* 슬래시로 구분지어 하나의 문자열로 넘겨주기위함 */
- 	for(var i=0; i<'${fn:length(reqstDetail)}'; i++){	
+ 	for(var i=0; i<'${fn:length(reqstDetail)}'; i++){
  		reqstNumArr += frm.reqst_seq[i].value + "/";	/* (ex) 26/25/24/23 */
  		reqstSttusArr += frm.selLctreSttus[i].value + "/"; 		/* (ex) C/R/C/N/C */
     }
@@ -79,7 +79,7 @@ function fnSubmit(){
 </script>
 </head>
 <body>	
-	<form id="frm" name="frm" method="post">
+	<form id="frm" name="frm" method="post">	
 		<input type="hidden" id="lctre_seq" name="lctre_seq"/>		
 		<input type="hidden" id="lctre_sttus" name="lctre_sttus"/>
 		<input type="hidden" id="reqstNumArr" name="reqstNumArr"/>

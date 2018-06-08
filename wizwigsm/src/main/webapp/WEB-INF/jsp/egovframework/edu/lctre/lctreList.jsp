@@ -153,7 +153,7 @@ function fnPage(page){
 				<td id="ckbox"><input type="checkbox"  name="chkInfo" value="${result.lctre_seq}"/></td>
 				
 				<!-- 강의번호 -->
-				<<td><c:out value="${result.lctre_seq}"/></td>
+				<td><c:out value="${result.lctre_seq}"/></td>
 				<%-- <td><c:out value="${pageVO.totRow-((pageVO.page-1)*pageVO.rowCount + status.index)}"/></td> --%>			
 				
 				<!-- 강의명 -->
@@ -211,7 +211,7 @@ function fnPage(page){
 		</c:choose>                                                                        
 		                                                                                   
 		<!-- 페이지 숫자 표시 -->                                                                 
-		<c:forEach var="page" begin="${pageVO.startPage}" end="${pageVO.endPage}" >  		                                                                                   
+		<c:forEach var="page" begin="${pageVO.startPage}" end="${pageVO.endPage}" step="1">  		                                                                                   
 		    <c:choose >                                                                    
 		        <c:when test="${pageVO.nowPage eq page}">${page}</c:when>                                                                                                                             
 		        <c:otherwise>                                                       
@@ -220,7 +220,7 @@ function fnPage(page){
 		    </c:choose>                                                                    
 		</c:forEach>                                                                             
 		<c:choose>                                                                         
-		    <c:when test="${pageVO.endPage eq pageVO.maxPage}">[다음]</c:when>                                                                       
+		    <c:when test="${pageVO.endPage eq pageVO.maxPage}"></c:when>                                                                       
 		    <c:otherwise>                                                                   
 		        <a href="/edu/lctre/selectLctreList.do?nowPage=${pageVO.nowPage+1}">[다음]</a>
 		    </c:otherwise>                                                                 

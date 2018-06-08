@@ -32,7 +32,7 @@ public class LctreController {
 		// ls --> lctreService
 		
 		try{		                                    
-			int listLimit = 10;    // 한 페이지_10개 목록 출력   
+			
 			int nowPage = 1;	   // 처음 접속시 무조건 1페이지 
 			
 			// 클릭한 페이지가 있으면,  그 페이지 정보를 가져와 현재페이지에 저장.                                                            
@@ -43,28 +43,21 @@ public class LctreController {
 			// 게시글 총 갯수를 가져오는 메소드를 실행
 			int listCount = lctreService.selectListTotalCount();
 			System.out.println("listCount : " + listCount + "################# ");        
-					
-			int startRow = (nowPage-1) * listLimit + 1;	// 한페이지의 시작글 번호 (ex) (1-1)*10+1 = 1
-		 	//int endRow = nowPage + (listLimit -1);		// 한페이지의 마지막 글번호 (ex) 1+(10-1) = 10		 	
-		 	int endRow = nowPage * listLimit;
 			
-			if(listCount > 0){				// 목록 글이 있을 때,
-				if(endRow > listCount){		// 10개의 목록리스트를 뽑기위해 마지막row를 총row로 
-					endRow = listCount;			
-				}
-			}			
 			
-			// 전체 페이지중 마지막 페이지                                                                                                                                                       
-			// (ex) 게시글이  listCount / listLimit가  딱 나누어 떨어질 때 +1을 해버리면 남는 페이지가 1개 생겨버림 
-			//		때문에 최대한 1에 가깝지만 0을 더해서는 올림이 되지 않도록 0.95를 더함.                                                                                                                                                   
-			int maxPage = (int)((double) listCount / listLimit + 0.95);                                      
-			                                                                                                   
+			// 전체 페이지중 마지막 페이지                                                                      
+			// ((총목록개수-1) / listLimit) +1;
+			int maxPage = ((listCount-1) / 10) +1;
+			
 			// starPage를 구하기 위한 공식.                                                                  
 			// 만약 페이지의 일의 자리 수가 0이 아니면 십의자리수가 -1이 되는 페이지가 되어버린다.  
 			// 이를 방지 하기 위해 페이지는 0.1~ 0.9 까지의 결과값이 나올 때 더해서 1이 올라가게 하는 숫자인 0.9를 더하여  
 			// 한자리를 높여주게 되면 모든 결과가 동일한 십의 자리 수를 갖게 된다.                                                                                                                                                         
-			int startPage = (((int)((double) nowPage / 10 + 0.9 )) -1) * 10 + 1 ;   
-			int endPage = startPage + 9;         
+			int startPage = (((int)((double) nowPage / 10 + 0.9 )) -1) * 10 + 1 ;  
+			int endPage = startPage + 9;      			
+			
+			int startRow = (nowPage - 1) * 10 + 1;
+			int endRow = (nowPage - 1) * 10 + 10;
 			
 			if(endPage > maxPage) {                                                                            
 			    endPage = maxPage;                                                                               
@@ -73,12 +66,11 @@ public class LctreController {
 			paramVO.setNowPage(nowPage);
 			paramVO.setStartPage(startPage);
 			paramVO.setEndPage(endPage);
-			paramVO.setMaxPage(maxPage);		
-			paramVO.setListLimit(listLimit);
+			paramVO.setMaxPage(maxPage);
 			paramVO.setStartRow(startRow);
 			paramVO.setEndRow(endRow);
 			
-			System.out.println(nowPage+ "/" +startPage + "/" +endPage + "/" +maxPage + "/" +listLimit+ "/" +startRow+ "/" +endRow);
+			System.out.println(nowPage+ "/" +startPage + "/" +endPage + "/" +maxPage + "/" +startRow+ "/" +endRow);
 			
 			// 해당 페이지에 출력될 게시글을 listLimit 만큼만 가져오기 위한 메소드                                                      
 			List<LctreVO> lctreList = lctreService.selectLctreList(paramVO);                                                

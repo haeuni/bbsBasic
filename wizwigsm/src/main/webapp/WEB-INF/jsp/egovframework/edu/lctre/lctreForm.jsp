@@ -115,7 +115,7 @@ function fnSelInstrctrNm(){
 			<tr>
 				<th>강의상태</th>
 				<td>
-					<input type="radio" name="sttus" value="R" />접수중
+					<input type="radio" name="sttus" value="R" checked="checked"/>접수중
 					<input type="radio" name="sttus" value="N" />접수종료 
 				</td>	
 			</tr>
