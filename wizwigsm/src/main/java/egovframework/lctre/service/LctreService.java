@@ -6,7 +6,10 @@ import java.util.List;
 public interface LctreService {
 	
 	// 강의목록
-	public List<LctreVO> selectLctreList(LctreVO paramVO);
+	public List<LctreVO> selectLctreList(PageVO paramVO);
+	
+	// 강의목록_전체목록 count
+	public int selectListTotalCount();
 	
 	// 강의목록_신청목록(접수중, 접수종료버튼 클릭시)
 	public List<ReqstVO> selectReqstBtnList(LctreVO paramVO);	
@@ -43,4 +46,5 @@ public interface LctreService {
 	
 	// 수강신청등록
 	public void insertReqstForm(ReqstVO paramVO);
+
 }

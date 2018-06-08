@@ -2,9 +2,6 @@
 <!DOCTYPE sqlMapConfig PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN"
     "http://www.ibatis.com/dtd/sql-map-config-2.dtd">
 
-<!-- ######## sql.xml-config.xml 작성########### -->
-
-<!-- sql.xml 위치 지정 -->
 <sqlMapConfig>						
 	<sqlMap resource="egovframework/sqlmap/edu/EduLogin_SQL_Oracle.xml"/>	
 	<sqlMap resource="egovframework/sqlmap/edu/EduBbs_SQL_Oracle.xml"/>	

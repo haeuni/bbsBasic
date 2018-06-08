@@ -6,15 +6,21 @@ import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.lctre.service.LctreVO;
+import egovframework.lctre.service.PageVO;
 import egovframework.lctre.service.ReqstVO;
 
 @Repository("LctreDAO")
 public class LctreDAO extends EgovComAbstractDAO {
 
 	// 강의목록
-	public List<LctreVO> selectLctreList(LctreVO paramVO){
+	public List<LctreVO> selectLctreList(PageVO paramVO){		
 		return (List<LctreVO>)list("LctreDAO.selectLctreList", paramVO);	
 	}		
+	
+	// 강의목록_ 전제사이즈 count7
+	public int selectListTotalCount(){
+		return (int) select("LctreDAO.selectListTotalCount");
+	}
 	
 	// 강의목록_신청목록(접수중, 접수종료버튼 클릭시)
 	public List<ReqstVO> selectReqstBtnList(LctreVO paramVO){
@@ -80,4 +86,5 @@ public class LctreDAO extends EgovComAbstractDAO {
 	public void insertReqstForm(ReqstVO paramVO){
 		insert("LctreDAO.insertReqstForm", paramVO);
 	}
+	
 }

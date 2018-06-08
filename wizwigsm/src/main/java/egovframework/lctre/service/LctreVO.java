@@ -3,20 +3,20 @@ package egovframework.lctre.service;
 // 강의 
 public class LctreVO {
 	
-	private String lctre_seq;	// 강의 pk
-	private String lctre_nm;	// 강의명
-	private String instrctr_seq;	// 강사 pk
-	private String instrctr_nm;		//강사명
-	private String rcrundt; 	// 모집인원
-	private String frst_regist_pnttm; 	// 최초등록일시
-	private String last_updt_pnttm;		// 최종수정일시
-	private String rdcnt;	//조회수
-	private String use_at;	//삭제여부
-	private String lctre_begin;	// 강의시작일
-	private String lctre_endde; // 강의종료일
+	private String lctre_seq;				// 강의 pk
+	private String lctre_nm;				// 강의명
+	private String instrctr_seq;			// 강사 pk
+	private String instrctr_nm;				// 강사명
+	private String rcrundt; 				// 모집인원
+	private String frst_regist_pnttm; 		// 최초등록일시
+	private String last_updt_pnttm;			// 최종수정일시
+	private String rdcnt;					// 조회수
+	private String use_at;					// 삭제여부
+	private String lctre_begin;				// 강의시작일
+	private String lctre_endde; 			// 강의종료일
 	
-	private String lctre_sttus; // 강의상태
-	private String reqst_cnt;	// 신청 count한 값
+	private String lctre_sttus; 			// 강의상태
+	private String reqst_cnt;				// 신청 count한 값
 
 	public String getLctre_seq() {
 		return lctre_seq;
@@ -30,7 +30,7 @@ public class LctreVO {
 		return lctre_nm;
 	}
 
-	public void setLctre_nm(String lctre_nm) {
+	public void setLctre_nm(String lctre_nm) { 
 		this.lctre_nm = lctre_nm;
 	}
 
@@ -120,6 +120,7 @@ public class LctreVO {
 
 	public void setLctre_sttus(String lctre_sttus) {
 		this.lctre_sttus = lctre_sttus;
-	}	
-			
+	}
+
+	
 }

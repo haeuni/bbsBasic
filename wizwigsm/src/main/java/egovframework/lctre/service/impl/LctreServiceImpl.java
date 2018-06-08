@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import egovframework.lctre.service.LctreService;
 import egovframework.lctre.service.LctreVO;
+import egovframework.lctre.service.PageVO;
 import egovframework.lctre.service.ReqstVO;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
@@ -19,9 +20,14 @@ public class LctreServiceImpl extends EgovAbstractServiceImpl implements LctreSe
 	private LctreDAO lctreDAO;
 	
 	// 강의목록
-	public List<LctreVO> selectLctreList(LctreVO paramVO){	
+	public List<LctreVO> selectLctreList(PageVO paramVO){								
 		return lctreDAO.selectLctreList(paramVO);
-	} 
+	}
+		
+	// 강의목록_전체사이즈 count
+	public int selectListTotalCount(){
+		return lctreDAO.selectListTotalCount();
+	}
 	
 	// 강의목록_신청목록(접수중, 접수종료버튼 클릭시)
 	public List<ReqstVO> selectReqstBtnList(LctreVO paramVO){

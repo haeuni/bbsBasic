@@ -22,8 +22,8 @@
 	}
 </style>
 <script type="text/javascript">
-/* 신청인원 버튼 */
-function fnCnt(lctre_seq){
+/* 신청인원 버튼
+	function fnCnt(lctre_seq){
 	var frm = document.frm;
 	var reqstListDiv = document.getElementById("reqstListDiv")
 
@@ -36,8 +36,8 @@ function fnCnt(lctre_seq){
 	
 	/* frm.lctre_seq.value = lctre_seq;
 	frm.action = "/edu/lctre/selectReqstBtnList.do";
-	frm.submit(); */
-}
+	frm.submit();
+} */
 /* 강의목록 */
 function fnList(){
 	var frm = document.frm;
@@ -112,7 +112,8 @@ function fnSubmit(){
 					</c:choose>
 				</td>
 				<th>신청인원</th>
-				<td><input type="button" id="reqst_cnt" name="reqst_cnt" value="${lctreDetail.reqst_cnt}" onclick="javascript:fnCnt();"/></td>
+				<%-- <td><input type="button" id="reqst_cnt" name="reqst_cnt" value="${lctreDetail.reqst_cnt}" onclick="javascript:fnCnt();"/></td> --%>
+				<td><c:out value="${lctreDetail.reqst_cnt}"/></td>
 			</tr>
 			<tr>
 				<td colspan="2"></td>
@@ -121,7 +122,7 @@ function fnSubmit(){
 			</tr>
 		</table>
 		
-		<div id="reqstListDiv" style="display: none;">
+		<!-- <div id="reqstListDiv" style="display: none;"> -->
 			<h3>신청목록</h3>
 			<table border="1">
 				<tr>
@@ -153,7 +154,7 @@ function fnSubmit(){
 					</td>
 				</tr>			
 			</table>
-		</div>
+		<!-- </div> -->
 	</form>
 </body>
 </html>

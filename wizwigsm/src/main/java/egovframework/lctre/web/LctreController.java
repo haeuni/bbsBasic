@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.lctre.service.LctreService;
 import egovframework.lctre.service.LctreVO;
+import egovframework.lctre.service.PageVO;
 import egovframework.lctre.service.ReqstVO;
 
 // @Controller : 컨트롤러 선언 _ 해당 클래스가 Controller임을 나타내기 위한 어노테이션
@@ -24,20 +25,59 @@ public class LctreController {
 	
 	// 강의목록
 	@RequestMapping("/edu/lctre/selectLctreList.do")
-	public String selectLctreList(HttpServletRequest request			
-			, @ModelAttribute(value="paramVO") LctreVO paramVO
+	public String selectLctreList(HttpServletRequest request	
+			, @ModelAttribute(value="paramVO") PageVO paramVO
 			, ModelMap model) throws Exception{
 		
-		try{							
-			// 목록리스트
-			List<LctreVO> lctreList = lctreService.selectLctreList(paramVO);
+		// ls --> lctreService
+		
+		try{		                                    
+			int listLimit = 10;    // 한 페이지_10개 목록 출력   
+			int nowPage = 1;	   // 처음 접속시 무조건 1페이지 
+			
+			// 클릭한 페이지가 있으면,  그 페이지 정보를 가져와 현재페이지에 저장.                                                            
+			if(request.getParameter("nowPage") != null) {                                                     
+				nowPage = Integer.parseInt(request.getParameter("nowPage"));                       
+			}           
+			
+			// 게시글 총 갯수를 가져오는 메소드를 실행
+			int listCount = lctreService.selectListTotalCount();
+			System.out.println("listCount : " + listCount + "################# ");        
+						
+			// 전체 페이지중 마지막 페이지                                                                                                                                                       
+			// (ex) 게시글이  listCount / listLimit가  딱 나누어 떨어질 때 +1을 해버리면 남는 페이지가 1개 생겨버림 
+			//		때문에 최대한 1에 가깝지만 0을 더해서는 올림이 되지 않도록 0.95를 더함.                                                                                                                                                   
+			int maxPage = (int)((double) listCount / listLimit + 0.95);                                      
+			                                                                                                   
+			// starPage를 구하기 위한 공식.                                                                  
+			// 만약 페이지의 일의 자리 수가 0이 아니면 십의자리수가 -1이 되는 페이지가 되어버린다.  
+			// 이를 방지 하기 위해 페이지는 0.1~ 0.9 까지의 결과값이 나올 때 더해서 1이 올라가게 하는 숫자인 0.9를 더하여  
+			// 한자리를 높여주게 되면 모든 결과가 동일한 십의 자리 수를 갖게 된다.                                                                                                                                                         
+			int startPage = (((int)((double) nowPage / 10 + 0.9 )) -1) * 10 + 1 ;   
+			int endPage = startPage + 9;         
+			
+			if(endPage > maxPage) {                                                                            
+			    endPage = maxPage;                                                                               
+			}                                                                                               	
+			
+			paramVO.setNowPage(nowPage);
+			paramVO.setStartPage(startPage);
+			paramVO.setEndPage(endPage);
+			paramVO.setMaxPage(maxPage);		
+			paramVO.setListLimit(listLimit);
+			
+			System.out.println(nowPage+ "/" +startPage + "/" +endPage + "/" +maxPage + "/" +listLimit);
+			
+			// 해당 페이지에 출력될 게시글을 listLimit 만큼만 가져오기 위한 메소드                                                      
+			List<LctreVO> lctreList = lctreService.selectLctreList(paramVO);                                                
+			
+			//페이징 처리 정보와 게시글 목록 정보 model에 담아 포워드.	
 			model.addAttribute("lctreList", lctreList);
-			
-			//lctreService.selectLctreList(paramVO);
-			
+			model.addAttribute("pageVO", paramVO);
+		
 		}catch(Exception e){
 			e.printStackTrace();
-		}
+		} 
 		return "/edu/lctre/lctreList";
 	}	
 	// 강의목록_체크삭제버튼

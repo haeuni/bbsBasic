@@ -40,6 +40,7 @@
 	}
 </style>
 <script type="text/javascript">
+
 /* 접수가능 버튼 */
 function fnReqstForm(lctre_seq){	
 	var frm = document.frm;			
@@ -74,8 +75,7 @@ function fnChkDel(){
 	var checkCnt = 0; 		/* 체크된 체크박스의 개수 */
 	var checkLast = "";		/* 체크된 체크박스중 마지막 체크박스 인덱스 담음 */
 	var rowInfo = ""; 		/* 체크된 체크박스의 모든 value값을 담음 */
-	
-	
+
 	for(var i=0; i<chk.length; i++){
 		checkCnt++;		/* 체크된 체크박스 갯수 +1 */
 		checkLast = i;	/* 체크된 체크박스 인덱스 */
@@ -126,73 +126,95 @@ function fnDetail(lctre_seq){
 		<input type="hidden" id="lctre_seq" name="lctre_seq" />	
 		<input type="hidden" id="chkInfoArr" name="chkInfoArr" />
 		
-	<h3>강의목록</h3>
-	<table border="1">
-		<tr>
-			<th></th>	
-			<th>번호</th>
-			<th>강의명</th>
-			<th>강사명</th>
-			<th>조회수</th>
-			<th>모집인원</th>
-			<th>비고</th>
-			<th>등록일</th>				
-		</tr>		
-		<c:forEach var="result" items="${lctreList}" >		
-		
-			<!-- ㅁ -->
-			<td id="ckbox"><input type="checkbox"  name="chkInfo" value="${result.lctre_seq}"/></td>
+		<h3>강의목록</h3>
+		<table border="1">
+			<tr>
+				<th></th>	
+				<th>번호</th>
+				<th>강의명</th>
+				<th>강사명</th>
+				<th>조회수</th>
+				<th>모집인원</th>
+				<th>비고</th>
+				<th>등록일</th>				
+			</tr>		
+			<c:forEach var="result" items="${lctreList}" varStatus="status" >		
+				<!-- 체크박스 -->
+				<td id="ckbox"><input type="checkbox"  name="chkInfo" value="${result.lctre_seq}"/></td>
+				
+				<!-- 강의번호 -->
+				<<td><c:out value="${result.lctre_seq}"/></td>
+				<%-- <td><c:out value="${pageVO.totRow-((pageVO.page-1)*pageVO.rowCount + status.index)}"/></td> --%>			
+				
+				<!-- 강의명 -->
+				<td><a href="javascript:void(0);" onclick="fnDetail('${result.lctre_seq}');"><c:out value="${result.lctre_nm}"/></a></td>
+				
+				<!-- 강사명 -->
+				<td><c:out value="${result.instrctr_nm}"/></td>
+				
+				<!-- 조회수 -->
+				<td><c:out value="${result.rdcnt}"/></td>
+				
+				<!-- 모집 (현재신청자수/모집인원수)-->
+				<td><c:out value="${result.reqst_cnt}"/>/<c:out value="${result.rcrundt}"/></td>							
+				
+				<!-- 비고 -->
+				<td>			
+					<c:choose>		
+						<c:when test="${now lt result.lctre_begin 
+										and result.lctre_sttus eq 'R' 
+										and result.reqst_cnt+0 lt result.rcrundt+0}">				
+						<button onclick="fnReqstForm('${result.lctre_seq}');" id="lctreBtnC">접수가능</button>
+						</c:when>
+						<c:when test="${now ge result.lctre_begin 
+										and now le result.lctre_endde}">		
+						<button onclick="fnReqstList('${result.lctre_seq}');" id="lctreBtnR">강의중</button>
+						</c:when>
+						<c:when test="${now gt result.lctre_endde 
+										or (now lt result.lctre_begin 
+										and result.lctre_sttus eq 'N' 
+										or result.reqst_cnt+0 eq result.rcrundt+0)}">
+						<button onclick="fnReqstList('${result.lctre_seq}');"  id="lctreBtnN">접수종료</button>
+						</c:when>		
+						<c:otherwise>-</c:otherwise>
+					</c:choose>
+				</td>
+							
+				<!-- 등록일 -->
+				<td id="date"><c:out value="${result.frst_regist_pnttm}"/></td>			
+			</tr>
+			</c:forEach>
+			<tr>
+				<td colspan="1"><button onclick="fnChkDel();" class="formBtn">선택삭제</button></td>
+				<td colspan="5"></td>
+				<td colspan="2"><button onclick="fnLctreForm();" class="formBtn">강의등록</button></td>			
+				<!-- <td colspan="2"><a href="javascript:void(0);" onclick="fnForm();">등록</a></td> -->
+			</tr>
+		</table>
 			
-			<!-- 강의번호 -->
-			<td><c:out value="${result.lctre_seq}"/></td>
-			
-			<!-- 강의명 -->
-			<td><a href="javascript:void(0);" onclick="fnDetail('${result.lctre_seq}');"><c:out value="${result.lctre_nm}"/></a></td>
-			
-			<!-- 강사명 -->
-			<td><c:out value="${result.instrctr_nm}"/></td>
-			
-			<!-- 조회수 -->
-			<td><c:out value="${result.rdcnt}"/></td>
-			
-			<!-- 모집 (현재신청자수/모집인원수)-->
-			<td><c:out value="${result.reqst_cnt}"/>/<c:out value="${result.rcrundt}"/></td>							
-			
-			<!-- 비고 -->
-			<td>			
-				<c:choose>		
-				<c:when test="${now lt result.lctre_begin 
-								and result.lctre_sttus eq 'R' 
-								and result.reqst_cnt+0 lt result.rcrundt+0}">				
-					<button onclick="fnReqstForm('${result.lctre_seq}');" id="lctreBtnC">접수가능</button>
-				</c:when>
-				<c:when test="${now ge result.lctre_begin 
-								and now le result.lctre_endde}">		
-					<button onclick="fnReqstList('${result.lctre_seq}');" id="lctreBtnR">강의중</button>
-				</c:when>
-				<c:when test="${now gt result.lctre_endde 
-								or (now lt result.lctre_begin 
-									and result.lctre_sttus eq 'N' 
-									or result.reqst_cnt+0 eq result.rcrundt+0)}">
-					<button onclick="fnReqstList('${result.lctre_seq}');"  id="lctreBtnN">접수종료</button>
-				</c:when>		
-				<c:otherwise>삑--</c:otherwise>
-				</c:choose>
-			</td>
-						
-			<!-- 등록일 -->
-			<td id="date"><c:out value="${result.frst_regist_pnttm}"/></td>
-			
-		</tr>
-		</c:forEach>
-		<tr>
-			<td colspan="1"><button onclick="fnChkDel();" class="formBtn">선택삭제</button></td>
-			<td colspan="5"></td>
-			<td colspan="2"><button onclick="fnLctreForm();" class="formBtn">강의등록</button></td>			
-			<!-- <td colspan="2"><a href="javascript:void(0);" onclick="fnForm();">등록</a></td> -->
-		</tr>
-	</table>
-	
+		<!-- 이전 페이지 표시 -->                                                                 
+		<c:choose>                                                                         
+		    <c:when test="${pageVO.nowPage eq 1 }"></c:when>                                                                      
+		    <c:otherwise>                                                                  
+		        <a href="/edu/lctre/selectLctreList.do?nowPage=${pageVO.nowPage-1}">[이전]</a> 
+		    </c:otherwise>                                                                 
+		</c:choose>                                                                        
+		                                                                                   
+		<!-- 페이지 숫자 표시 -->                                                                 
+		<c:forEach var="page" begin="${pageVO.startPage}" end="${pageVO.endPage}" >  		                                                                                   
+		    <c:choose >                                                                    
+		        <c:when test="${pageVO.nowPage eq page}">${page}</c:when>                                                                                                                             
+		        <c:otherwise>                                                       
+		            <a href="/edu/lctre/selectLctreList.do?nowPage=${page}" style="color:#cecece;">${page}</a>      
+		        </c:otherwise>                                                             
+		    </c:choose>                                                                    
+		</c:forEach>                                                                             
+		<c:choose>                                                                         
+		    <c:when test="${pageVO.endPage eq pageVO.maxPage}">[다음]</c:when>                                                                       
+		    <c:otherwise>                                                                   
+		        <a href="/edu/lctre/selectLctreList.do?nowPage=${pageVO.nowPage+1}">[다음]</a>
+		    </c:otherwise>                                                                 
+		</c:choose> 
 	</form>
 </body>
 </html>
