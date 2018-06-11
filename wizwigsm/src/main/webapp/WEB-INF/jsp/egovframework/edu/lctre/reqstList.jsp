@@ -24,6 +24,7 @@ function fnUpdate(reqst_seq){
 	frm.reqst_seq.value = reqst_seq;
 	frm.action = "/edu/lctre/modReqstBtnList.do";
 	frm.submit();
+	
 }
 
 /* 강의목록 */

@@ -122,6 +122,17 @@ function fnPage(page){
 	frm.submit();
 }
 
+/* selectbox 선택한 option value 구하기 */
+function fnListLimit(){
+	var frm = document.frm;
+	var target = document.getElementById("selListLimit");
+	frm.listLimit.value = target.options[target.selectedIndex].value;
+
+	alert(frm.listLimit.value );
+	frm.action = "/edu/lctre/selectLctreList.do";
+	frm.submit();
+}
+
 </script>
 </head>
 <body>
@@ -135,8 +146,14 @@ function fnPage(page){
 		<input type="hidden" id="lctre_seq" name="lctre_seq" />	
 		<input type="hidden" id="chkInfoArr" name="chkInfoArr" />
 		<input type="hidden" id="nowPage" name="nowPage" />
-		
-		<h3>강의목록</h3>
+		<input type="hidden" id="listLimit" name="listLimit" />
+				
+		<h3>강의목록</h3>		
+		<select name="selListLimit" id="selListLimit" onchange="fnListLimit();">
+				<option value="10" selected="selected">10개씩</option>
+				<option value="20">20개씩</option>
+				<option value="30">30개씩</option>
+		</select>
 		<table border="1">
 			<tr>
 				<th></th>	
@@ -203,7 +220,7 @@ function fnPage(page){
 		</table>
 			
 		<!-- 이전 페이지 표시 -->                                                                 
-		<c:choose>                                                                         
+		<c:choose>                                                                       
 		    <c:when test="${pageVO.nowPage eq 1}"></c:when>                                                                      
 		    <c:otherwise>                                                                  
 		        <a href="/edu/lctre/selectLctreList.do?nowPage=${pageVO.nowPage-1}">[이전]</a> 

@@ -20,7 +20,7 @@
 	                    , LCT.LCTRE_NM
 	                    , INS.INSTRCTR_NM
 	                    , LCT.RCRUNDT
-	                    , LCT.FRST_REGIST_PNTTM
+	                    , TO_CHAR(LCT.FRST_REGIST_PNTTM, 'YYYY-MM-DD') AS "FRST_REGIST_PNTTM"
 	                    , LCT.RDCNT
 	                    , (SELECT COUNT(REQ.REQST_SEQ)
 								FROM T_REQST REQ
@@ -170,7 +170,8 @@
 		<![CDATA[
 			SELECT REQST_SEQ
 				, APPLCNT_NM
-				, FRST_REGIST_PNTTM
+				, TO_CHAR(FRST_REGIST_PNTTM, 'YYYY-MM-DD') AS "FRST_REGIST_PNTTM"
+				, LCTRE_STTUS
 			FROM T_REQST 
 			WHERE 1=1
 			AND LCTRE_SEQ = #lctre_seq#

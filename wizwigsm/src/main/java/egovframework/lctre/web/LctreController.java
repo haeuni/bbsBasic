@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.lctre.service.LctreService;
 import egovframework.lctre.service.LctreVO;
@@ -28,25 +29,25 @@ public class LctreController {
 	public String selectLctreList(HttpServletRequest request	
 			, @ModelAttribute(value="paramVO") PageVO paramVO
 			, ModelMap model) throws Exception{
-		
-		// ls --> lctreService
-		
+				
 		try{		                                    
+			System.out.println("@@@@@@@@@@@@@@@@@@@@@@" + request.getParameter("listLimit"));
 			
 			int nowPage = 1;	   // 처음 접속시 무조건 1페이지 
-			
-			// 클릭한 페이지가 있으면,  그 페이지 정보를 가져와 현재페이지에 저장.                                                            
+						
+			// 클릭한 페이지가 있으면, 그 페이지 정보를 가져와 현재페이지에 저장.                                                            
 			if(request.getParameter("nowPage") != null) {                                                     
 				nowPage = Integer.parseInt(request.getParameter("nowPage"));                       
 			}           
 			
 			// 게시글 총 갯수를 가져오는 메소드를 실행
 			int listCount = lctreService.selectListTotalCount();
-			System.out.println("listCount : " + listCount + "################# ");        
+			System.out.println("listCount : " + listCount + "#################");        
 			
 			
 			// 전체 페이지중 마지막 페이지                                                                      
 			// ((총목록개수-1) / listLimit) +1;
+			// (ex) ((112-1) / 10 ) +1 = 12 페이지
 			int maxPage = ((listCount-1) / 10) +1;
 			
 			// starPage를 구하기 위한 공식.                                                                  
@@ -55,6 +56,7 @@ public class LctreController {
 			// 한자리를 높여주게 되면 모든 결과가 동일한 십의 자리 수를 갖게 된다.                                                                                                                                                         
 			int startPage = (((int)((double) nowPage / 10 + 0.9 )) -1) * 10 + 1 ;  
 			int endPage = startPage + 9;      			
+			
 			
 			int startRow = (nowPage - 1) * 10 + 1;
 			int endRow = (nowPage - 1) * 10 + 10;
@@ -106,7 +108,7 @@ public class LctreController {
 		return "redirect:/edu/lctre/selectLctreList.do";
 	}	
 	
-	// 강의목록_신청자목록 (접수중/접수종료 버튼 클릭시)
+	// 강의목록_신청자목록 (강의중/접수종료 버튼 클릭시)
 	@RequestMapping("/edu/lctre/selectReqstBtnList.do")
 	public String selectReqstBtnList(HttpServletRequest request			
 			, @ModelAttribute(value="paramVO") LctreVO paramVO
@@ -214,12 +216,14 @@ public class LctreController {
 			String[] reqstNumArr = request.getParameter("reqstNumArr").split("/");
 			String[] reqstSttusArr = request.getParameter("reqstSttusArr").split("/");			
 			
+			
 			for(int i=0; i<reqstNumArr.length; i++){
 				paramVO.setReqst_seq(reqstNumArr[i]);
 				paramVO.setLctre_sttus(reqstSttusArr[i]);
 				
 				lctreService.modReqstSttus(paramVO);
-			}						
+				
+			}
 			
 		}catch(Exception e){
 			e.printStackTrace();
