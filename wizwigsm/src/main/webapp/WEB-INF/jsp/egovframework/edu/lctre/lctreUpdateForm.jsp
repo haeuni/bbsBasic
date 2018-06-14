@@ -73,8 +73,7 @@ function fnUpdate(){
 			frm.lctre_sttus.value = sttus[i].value;
 			//alert(sttus[i].value);
 		}
-	}
-	
+	}	
 	frm.action ="/edu/lctre/updateLctre.do";
 	frm.submit();	
 }

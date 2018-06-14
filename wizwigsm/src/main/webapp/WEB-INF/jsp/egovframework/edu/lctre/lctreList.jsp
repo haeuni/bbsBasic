@@ -7,6 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <style>
 	table{
 		text-align: center;	
@@ -40,24 +41,28 @@
 	}
 </style>
 <script type="text/javascript">
-
 /* 접수가능 버튼 */
 function fnReqstForm(lctre_seq){	
-	var frm = document.frm;			
-	frm.lctre_seq.value = lctre_seq;
-	frm.action= "/edu/lctre/selectReqstForm.do";
+	var frm = document.frm;				
+	//frm.action= "/edu/lctre/selectReqstForm.do";	
+	var url = "/edu/lctre/selectReqstForm.do";
+	window.open(url,"", width=500, height=700);
+
+	frm.lctre_seq.value = lctre_seq;	
 	frm.submit();
 }
-/* 접수중 버튼 */
-function fnReqstList(lctre_seq, lctre_nm){	
-	var frm = document.frm;
-	/* var popUrl = "/edu/lctre/selectReqstBtnList.do";
-	var Top = (window.screen.height - 250)/2;
-    var Left = (window.screen.width - 300)/2;
 
-	window.open(popUrl,"", width=600, height=400, left='+Left+',top='+Top+'); */
-	frm.lctre_seq.value = lctre_seq;
-	frm.action= "/edu/lctre/selectReqstBtnList.do";
+/* 강의중 버튼 */
+function fnReqstList(lctre_seq, lctre_nm){	
+	var frm = document.frm;	
+	var url = "/edu/lctre/selectReqstBtnList.do";
+	// 팝업 셋팅
+	pop = window.open(url,"parent", width=500, height=700); 
+	// 자식 팝업에 부모값 보내기 
+	// pop.document.getElementById("lctre_seq").value = document.getElementById("lctre_seq").value;
+	
+	//frm.lctre_seq.value = lctre_seq;
+	// frm.action= "/edu/lctre/selectReqstBtnList.do";
 	frm.submit();
 }
 /* 강의등록버튼 */
@@ -69,7 +74,6 @@ function fnLctreForm(){
 /* 선택삭제버튼 */
 function fnChkDel(){
 	var frm = document.frm;
-	
 	var chk = document.getElementsByName("chkInfo") /* 체크박스 객체  */
 	var checkRow = ""; 		/* 체크된 체크박스 value 담기위한 변수 */
 	var checkCnt = 0; 		/* 체크된 체크박스의 개수 */
@@ -79,8 +83,7 @@ function fnChkDel(){
 	for(var i=0; i<chk.length; i++){
 		checkCnt++;		/* 체크된 체크박스 갯수 +1 */
 		checkLast = i;	/* 체크된 체크박스 인덱스 */
-	}
-	
+	}	
 	for(var i=0; i<chk.length; i++){	/* 체크박스의 크기만큼 돌면서 */
 		if(chk[i].checked == true){		/* 체크된 인덱스의 값이 true면(선택되면) */			
 			
@@ -100,8 +103,6 @@ function fnChkDel(){
 			checkRow = '';    //checkRow초기화.
 		}		
 	}
-	//alert(rowInfo);
-	
 	frm.chkInfoArr.value = rowInfo;
 	frm.action = "/edu/lctre/deleteLctreList.do";
 	frm.submit();
@@ -113,24 +114,14 @@ function fnDetail(lctre_seq){
 	frm.action = "/edu/lctre/selectLctreDetail.do";
 	frm.submit();
 }
-
-/* 페이징 */
-function fnPage(page){
-	var frm = document.frm;
-	frm.nowPage.value = page;
-	frm.action = "/edu/lctre/deleteLctreList.do";
-	frm.submit();
-}
-
-/* selectbox 선택한 option value 구하기 */
-function fnListLimit(){
-	var frm = document.frm;
-	var target = document.getElementById("selListLimit");
-	frm.listLimit.value = target.options[target.selectedIndex].value;
-
-	alert(frm.listLimit.value );
+/* 목록 갯수 select */
+function fnSelListLimit(){
+	var frm = document.frm;	
+	/* 선택한 select값을 얻어옴 */
+	frm.listLimit.value  = frm.selListLimit.options[frm.selListLimit.selectedIndex].value;
+		alert("새로 선택한값 : " + frm.listLimit.value);
 	frm.action = "/edu/lctre/selectLctreList.do";
-	frm.submit();
+	frm.submit(); 
 }
 
 </script>
@@ -145,15 +136,14 @@ function fnListLimit(){
 	<form id="frm" name="frm" method="post">		
 		<input type="hidden" id="lctre_seq" name="lctre_seq" />	
 		<input type="hidden" id="chkInfoArr" name="chkInfoArr" />
-		<input type="hidden" id="nowPage" name="nowPage" />
-		<input type="hidden" id="listLimit" name="listLimit" />
-				
-		<h3>강의목록</h3>		
-		<select name="selListLimit" id="selListLimit" onchange="fnListLimit();">
-				<option value="10" selected="selected">10개씩</option>
-				<option value="20">20개씩</option>
-				<option value="30">30개씩</option>
-		</select>
+		<input type="hidden" id="listLimit" name="listLimit"/>
+	
+		<h3>강의목록</h3>				
+		<select id="selListLimit" name="selListLimit" onchange="fnSelListLimit();">
+				<option value="10" <c:if test="${pageVO.listLimit eq 10}">selected</c:if>>10개씩</option>
+				<option value="20" <c:if test="${pageVO.listLimit eq 20}">selected</c:if>>20개씩</option>
+				<option value="30" <c:if test="${pageVO.listLimit eq 30}">selected</c:if>>30개씩</option>
+		</select>						
 		<table border="1">
 			<tr>
 				<th></th>	
@@ -170,8 +160,7 @@ function fnListLimit(){
 				<td id="ckbox"><input type="checkbox"  name="chkInfo" value="${result.lctre_seq}"/></td>
 				
 				<!-- 강의번호 -->
-				<td><c:out value="${result.lctre_seq}"/></td>
-				<%-- <td><c:out value="${pageVO.totRow-((pageVO.page-1)*pageVO.rowCount + status.index)}"/></td> --%>			
+				<td><c:out value="${result.lctre_seq}"/></td>		
 				
 				<!-- 강의명 -->
 				<td><a href="javascript:void(0);" onclick="fnDetail('${result.lctre_seq}');"><c:out value="${result.lctre_nm}"/></a></td>
@@ -187,24 +176,24 @@ function fnListLimit(){
 				
 				<!-- 비고 -->
 				<td>			
-					<c:choose>		
-						<c:when test="${now lt result.lctre_begin 
-										and result.lctre_sttus eq 'R' 
-										and result.reqst_cnt+0 lt result.rcrundt+0}">				
-						<button onclick="fnReqstForm('${result.lctre_seq}');" id="lctreBtnC">접수가능</button>
-						</c:when>
-						<c:when test="${now ge result.lctre_begin 
-										and now le result.lctre_endde}">		
-						<button onclick="fnReqstList('${result.lctre_seq}');" id="lctreBtnR">강의중</button>
-						</c:when>
-						<c:when test="${now gt result.lctre_endde 
-										or (now lt result.lctre_begin 
-										and result.lctre_sttus eq 'N' 
-										or result.reqst_cnt+0 eq result.rcrundt+0)}">
-						<button onclick="fnReqstList('${result.lctre_seq}');"  id="lctreBtnN">접수종료</button>
-						</c:when>		
-						<c:otherwise>-</c:otherwise>
-					</c:choose>
+				<c:choose>		
+					<c:when test="${now lt result.lctre_begin 
+									and result.lctre_sttus eq 'R' 
+									and result.reqst_cnt+0 lt result.rcrundt+0}">				
+					<button onclick="fnReqstForm('${result.lctre_seq}');" id="lctreBtnC">접수가능</button>
+					</c:when>
+					<c:when test="${now ge result.lctre_begin 
+									and now le result.lctre_endde}">		
+					<button onclick="fnReqstList('${result.lctre_seq}');" id="lctreBtnR">강의중</button>
+					</c:when>
+					<c:when test="${now gt result.lctre_endde 
+									or (now lt result.lctre_begin 
+									and result.lctre_sttus eq 'N' 
+									or result.reqst_cnt+0 eq result.rcrundt+0)}">
+					<button onclick="fnReqstList('${result.lctre_seq}');"  id="lctreBtnN">접수종료</button>
+					</c:when>		
+					<c:otherwise>-</c:otherwise>
+				</c:choose>
 				</td>
 							
 				<!-- 등록일 -->
@@ -214,8 +203,7 @@ function fnListLimit(){
 			<tr>
 				<td colspan="1"><button onclick="fnChkDel();" class="formBtn">선택삭제</button></td>
 				<td colspan="5"></td>
-				<td colspan="2"><button onclick="fnLctreForm();" class="formBtn">강의등록</button></td>			
-				<!-- <td colspan="2"><a href="javascript:void(0);" onclick="fnForm();">등록</a></td> -->
+				<td colspan="2"><button onclick="fnLctreForm();" class="formBtn">강의등록</button></td>
 			</tr>
 		</table>
 			
@@ -223,23 +211,23 @@ function fnListLimit(){
 		<c:choose>                                                                       
 		    <c:when test="${pageVO.nowPage eq 1}"></c:when>                                                                      
 		    <c:otherwise>                                                                  
-		        <a href="/edu/lctre/selectLctreList.do?nowPage=${pageVO.nowPage-1}">[이전]</a> 
+		        <a href="/edu/lctre/selectLctreList.do?nowPage=${pageVO.nowPage-1}&listLimit=${pageVO.listLimit}">[이전]</a> 
 		    </c:otherwise>                                                                 
 		</c:choose>                                                                        
 		                                                                                   
 		<!-- 페이지 숫자 표시 -->                                                                 
-		<c:forEach var="page" begin="${pageVO.startPage}" end="${pageVO.endPage}" step="1">  		                                                                                   
+		<c:forEach var="page" begin="${pageVO.startPage}" end="${pageVO.endPage}">  		                                                                                   
 		    <c:choose >                                                                    
 		        <c:when test="${pageVO.nowPage eq page}">${page}</c:when>                                                                                                                             
 		        <c:otherwise>                                                       
-		            <a href="/edu/lctre/selectLctreList.do?nowPage=${page}" onclick="fnPage('${page}');" style="color:#cecece;">${page}</a>      
+		            <a href="/edu/lctre/selectLctreList.do?nowPage=${page}&listLimit=${pageVO.listLimit}" style="color:#cecece;">${page}</a>      
 		        </c:otherwise>                                                             
 		    </c:choose>                                                                    
 		</c:forEach>                                                                             
 		<c:choose>                                                                         
 		    <c:when test="${pageVO.endPage eq pageVO.maxPage}"></c:when>                                                                       
 		    <c:otherwise>                                                                   
-		        <a href="/edu/lctre/selectLctreList.do?nowPage=${pageVO.nowPage+1}">[다음]</a>
+		        <a href="/edu/lctre/selectLctreList.do?nowPage=${pageVO.nowPage+1}&listLimit=${pageVO.listLimit}">[다음]</a>
 		    </c:otherwise>                                                                 
 		</c:choose> 
 	</form>
