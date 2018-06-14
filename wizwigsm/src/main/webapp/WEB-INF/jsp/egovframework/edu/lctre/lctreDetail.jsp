@@ -39,6 +39,8 @@
 	frm.submit();
 } */
 /* 강의목록 */
+alert('${lctreVO.listLimit}');
+
 function fnList(){
 	var frm = document.frm;
 	frm.action = "/edu/lctre/selectLctreList.do";
@@ -162,8 +164,7 @@ function fnSubmit(){
 					<td><c:out value="${result.applcnt_nm}"/></td>
 					<td><c:out value="${result.frst_regist_pnttm}"/></td>
 					<!-- 신청상태 (완료:C / 신청중:R / 취소:N) -->
-					<td>
-					${result.lctre_sttus} 
+					<td>					
 						<select name="selLctreSttus" id="selLctreSttus" onchange="fnSttus();">
 								<option value="C" <c:if test="${result.lctre_sttus eq 'C'}" >selected</c:if>>신청완료</option>
 								<option value="R" <c:if test="${result.lctre_sttus eq 'R'}" >selected</c:if>>신청중</option>

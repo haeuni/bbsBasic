@@ -18,20 +18,22 @@
 	th{
 		background-color: #cecece;
 	}
-	#lctreBtnC{
-		background-color : blue;
-		color : white; 		
-		font-weight: bold;	
-		
+	a{
+	 	text-decoration: none;
+	}
+	#tdBtn{
+		background-color : #f3f3f0;
+	}
+	#lctreBtnC{		
+		color : blue; 		
+		font-weight: bold;			
 	}
 	#lctreBtnR{
-		background-color : green;
-		color : white; 		
+		color : green; 		
 		font-weight: bold;	
 	}
 	#lctreBtnN{
-		background-color : red;
-		color : white; 		
+		color : red; 		
 		font-weight: bold;	
 	}
 	.formBtn{
@@ -43,32 +45,31 @@
 <script type="text/javascript">
 /* 접수가능 버튼 */
 function fnReqstForm(lctre_seq){	
-	var frm = document.frm;				
-	//frm.action= "/edu/lctre/selectReqstForm.do";	
-	var url = "/edu/lctre/selectReqstForm.do";
-	window.open(url,"", width=500, height=700);
-
-	frm.lctre_seq.value = lctre_seq;	
-	frm.submit();
-}
-
-/* 강의중 버튼 */
-function fnReqstList(lctre_seq, lctre_nm){	
 	var frm = document.frm;	
-	var url = "/edu/lctre/selectReqstBtnList.do";
-	// 팝업 셋팅
-	pop = window.open(url,"parent", width=500, height=700); 
-	// 자식 팝업에 부모값 보내기 
-	// pop.document.getElementById("lctre_seq").value = document.getElementById("lctre_seq").value;
+	var url = "/edu/lctre/selectReqstForm.do?lctre_seq="+ lctre_seq;	
+	window.open(url,"", "width=500, height=700");
 	
-	//frm.lctre_seq.value = lctre_seq;
-	// frm.action= "/edu/lctre/selectReqstBtnList.do";
-	frm.submit();
+	// popReqstForm = window.open(url,"", "width=500, height=700");
+	/* frm을 target으로 하겠다. */
+	//frm.target = "popReqstForm";
+	// frm.lctre_seq.value = lctre_seq;
+	//frm.action = "/edu/lctre/selectReqstForm.do";	
+	//frm.submit();
+}
+/* 강의중,접수종료 버튼 */
+function fnReqstList(lctre_seq, lctre_nm){	
+	var frm = document.frm;
+	var url = "/edu/lctre/selectReqstBtnList.do?lctre_seq="+ lctre_seq; 
+	window.open(url,"", "width=500, height=700"); 
+	
+	//frm.target = "popReqstList";
+	//frm.action = "/edu/lctre/selectReqstBtnList.do"; 
+	//frm.submit(); 
 }
 /* 강의등록버튼 */
 function fnLctreForm(){	
 	var frm = document.frm;
-	frm.action = "/edu/lctre/selectLctreForm.do";
+	frm.action = "/edu/lctre/selectLctreForm.do?listLimit=${pageVO.listLimit}";
 	frm.submit();
 }
 /* 선택삭제버튼 */
@@ -111,7 +112,7 @@ function fnChkDel(){
 function fnDetail(lctre_seq){
 	var frm = document.frm;
 	frm.lctre_seq.value = lctre_seq;
-	frm.action = "/edu/lctre/selectLctreDetail.do";
+	frm.action = "/edu/lctre/selectLctreDetail.do?listLimit=${pageVO.listLimit}";
 	frm.submit();
 }
 /* 목록 갯수 select */
@@ -122,6 +123,13 @@ function fnSelListLimit(){
 		alert("새로 선택한값 : " + frm.listLimit.value);
 	frm.action = "/edu/lctre/selectLctreList.do";
 	frm.submit(); 
+}
+
+function fnPage(){
+	alert(1); 
+	var frm = document.frm;
+	frm.action = "/edu/lctre/selectLctreList.do?nowPage=1&listLimit=${pageVO.listLimit}";
+	frm.submit();
 }
 
 </script>
@@ -153,7 +161,7 @@ function fnSelListLimit(){
 				<th>조회수</th>
 				<th>모집인원</th>
 				<th>비고</th>
-				<th>등록일</th>				
+				<th>등록일</th>				 
 			</tr>		
 			<c:forEach var="result" items="${lctreList}" varStatus="status" >		
 				<!-- 체크박스 -->
@@ -175,22 +183,22 @@ function fnSelListLimit(){
 				<td><c:out value="${result.reqst_cnt}"/>/<c:out value="${result.rcrundt}"/></td>							
 				
 				<!-- 비고 -->
-				<td>			
+				<td id="tdBtn">			
 				<c:choose>		
 					<c:when test="${now lt result.lctre_begin 
 									and result.lctre_sttus eq 'R' 
 									and result.reqst_cnt+0 lt result.rcrundt+0}">				
-					<button onclick="fnReqstForm('${result.lctre_seq}');" id="lctreBtnC">접수가능</button>
+					<a href="javascript:void(0);" onclick="fnReqstForm('${result.lctre_seq}');" id="lctreBtnC">접수가능</a>
 					</c:when>
 					<c:when test="${now ge result.lctre_begin 
 									and now le result.lctre_endde}">		
-					<button onclick="fnReqstList('${result.lctre_seq}');" id="lctreBtnR">강의중</button>
+					<a href="javascript:void(0);" onclick="fnReqstList('${result.lctre_seq}');" id="lctreBtnR">강의중</a>
 					</c:when>
 					<c:when test="${now gt result.lctre_endde 
 									or (now lt result.lctre_begin 
 									and result.lctre_sttus eq 'N' 
 									or result.reqst_cnt+0 eq result.rcrundt+0)}">
-					<button onclick="fnReqstList('${result.lctre_seq}');"  id="lctreBtnN">접수종료</button>
+					<a href="javascript:void(0);" onclick="fnReqstList('${result.lctre_seq}');"  id="lctreBtnN">접수종료</a>
 					</c:when>		
 					<c:otherwise>-</c:otherwise>
 				</c:choose>

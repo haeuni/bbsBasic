@@ -14,6 +14,8 @@
 	}
 </style>  
 <script>
+alert('${lctreVO.listLimit}');
+
 $(function(){
 	$("#lctre_begin").datepicker({
 		  changeMonth: true, // 월을 바꿀수 있는 셀렉트 박스를 표시한다.
@@ -52,7 +54,7 @@ $(function(){
 });
 function fnList(){	
 	var frm = document.frm;
-	frm.action = "/edu/lctre/selectLctreList.do";
+	frm.action = "/edu/lctre/selectLctreList.do?listLimit=${lctreVO.listLimit}";
 	frm.submit();
 }
 function fnSubmit(){

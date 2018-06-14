@@ -28,8 +28,8 @@ public class LctreDAO extends EgovComAbstractDAO {
 	}
 	
 	// 강의목록_신청목록_삭제
-	public void modReqstBtnList(ReqstVO paramVO){
-		update("LctreDAO.modReqstBtnList", paramVO);
+	public int modReqstBtnList(ReqstVO paramVO){
+		return update("LctreDAO.modReqstBtnList", paramVO);
 	}
 	
 	// 강의등록_comboBox 
@@ -83,8 +83,8 @@ public class LctreDAO extends EgovComAbstractDAO {
 	}
 	
 	// 수강신청등록
-	public void insertReqstForm(ReqstVO paramVO){
-		insert("LctreDAO.insertReqstForm", paramVO);
+	public int insertReqstForm(ReqstVO paramVO){
+		return update("LctreDAO.insertReqstForm", paramVO);
 	}
 	
 }

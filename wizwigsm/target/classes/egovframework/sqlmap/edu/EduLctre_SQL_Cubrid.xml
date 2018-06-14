@@ -51,8 +51,39 @@
 			AND USE_AT = 'Y'
 		]]>
 	</select>
-
-	<!-- 강의목록_신청자목록(강의중, 강의종료 버튼클릭시)-->
+	
+	<!-- 강의목록_수강신청등록폼_강의명 select(접수가능 버튼클릭시) -->
+	<select id="LctreDAO.selectReqstForm" parameterClass="LctreVO" resultClass="LctreVO">
+		<![CDATA[
+			SELECT LCTRE_SEQ
+				 , LCTRE_NM
+			FROM T_LCTRE
+			WHERE 1=1
+			AND LCTRE_SEQ = #lctre_seq#
+		]]>	
+	</select>
+	
+	<!-- 강의목록_신청등록폼 (접수가능 버튼클릭시) -->
+	<update id="LctreDAO.insertReqstForm" parameterClass="ReqstVO">
+		<![CDATA[
+			INSERT INTO T_REQST
+				( REQST_SEQ
+				, LCTRE_SEQ
+				, APPLCNT_NM
+				, LCTRE_STTUS
+				, FRST_REGIST_PNTTM
+				, LAST_UPDT_PNTTM)
+			VALUES
+				( SEQ_REQST.NEXT_VALUE
+				, #lctre_seq#
+				, #applcnt_nm#
+				, 'N'
+				, SYSDATETIME
+				, SYSDATETIME)
+		]]>		
+	</update>
+	
+	<!-- 강의목록_신청자목록(강의중, 접수종료 버튼클릭시)-->
 	<select id="LctreDAO.selectReqstBtnList" parameterClass="LctreVO" resultClass="ReqstVO">
 		<![CDATA[
 			SELECT REQST_SEQ
@@ -214,37 +245,6 @@
 			WHERE 1=1
 			AND LCTRE_SEQ = #lctre_seq#
 		]]>
-	</update>	
-		
-	<!-- 수강신청등록폼(강의명 select) -->
-	<select id="LctreDAO.selectReqstForm" parameterClass="LctreVO" resultClass="LctreVO">
-		<![CDATA[
-			SELECT LCTRE_SEQ
-				 , LCTRE_NM
-			FROM T_LCTRE
-			WHERE 1=1
-			AND LCTRE_SEQ = #lctre_seq#
-		]]>
+	</update>		
 	
-	</select>
-	
-	<!-- 수강신청등록폼 -->
-	<insert id="LctreDAO.insertReqstForm" parameterClass="ReqstVO">
-		<![CDATA[
-			INSERT INTO T_REQST
-				( REQST_SEQ
-				, LCTRE_SEQ
-				, APPLCNT_NM
-				, LCTRE_STTUS
-				, FRST_REGIST_PNTTM
-				, LAST_UPDT_PNTTM)
-			VALUES
-				( SEQ_REQST.NEXT_VALUE
-				, #lctre_seq#
-				, #applcnt_nm#
-				, 'N'
-				, SYSDATETIME
-				, SYSDATETIME)
-		]]>		
-	</insert>
 </sqlMap>	

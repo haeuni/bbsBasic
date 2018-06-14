@@ -17,6 +17,7 @@ public class LctreVO {
 	
 	private String lctre_sttus; 			// 강의상태
 	private String reqst_cnt;				// 신청 count한 값
+	private String listLimit; 				// 한 페이지에 게시글이 몇개가 보여질지 표시.
 
 	public String getLctre_seq() {
 		return lctre_seq;
@@ -122,5 +123,13 @@ public class LctreVO {
 		this.lctre_sttus = lctre_sttus;
 	}
 
+	public String getListLimit() {
+		return listLimit;
+	}
+
+	public void setListLimit(String listLimit) {
+		this.listLimit = listLimit;
+	}
+	
 	
 }

@@ -10,6 +10,8 @@ public class ReqstVO {
 	private String frst_regist_pnttm; //최초등록일시
 	private String last_regist_pnttm; //최종수정일시
 		
+	private String listLimit; // 한 페이지에 게시글이 몇개가 보여질지 표시.
+	
 	public String getReqst_seq() {
 		return reqst_seq;
 	}
@@ -46,4 +48,11 @@ public class ReqstVO {
 	public void setLast_regist_pnttm(String last_regist_pnttm) {
 		this.last_regist_pnttm = last_regist_pnttm;
 	}
+	public String getListLimit() {
+		return listLimit;
+	}
+	public void setListLimit(String listLimit) {
+		this.listLimit = listLimit;
+	}
+	
 }

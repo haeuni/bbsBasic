@@ -18,26 +18,36 @@
 	}
 </style>
 <script type="text/javascript">
-opener.parent.fnReqstList();
-
 /* 삭제버튼(신청상태 'c'를 'n'으로 바꿈) */
 function fnUpdate(reqst_seq){
 	var frm = document.frm;
-	frm.reqst_seq.value = reqst_seq;
+ 	frm.reqst_seq.value = reqst_seq;
 	frm.action = "/edu/lctre/modReqstBtnList.do";
 	frm.submit();
 }
-/* 강의목록 */
-function fnList(){
-	var frm = document.frm;
-	frm.action = "/edu/lctre/selectLctreList.do";
-	frm.submit();
+/* null과 빈값 구분하기  */
+if('${result}' != "")
+{	
+	if('${result}' == 1){
+		alert("성공");
+		window.opener.parent.location="/edu/lctre/selectLctreList.do";
+		self.close();
+	}else{
+		alert("실패");	
+	}
 }
 
+/* 강의목록 */
+function fnList(){
+	/* var frm = document.frm;
+	frm.action = "/edu/lctre/selectLctreList.do";
+	frm.submit(); */
+	window.opener.parent.location="/edu/lctre/selectLctreList.do";
+	self.close();
+}
 </script>
 </head>
 <body>	
-	<input type="hidden" id="lctre_seq" name="lctre_seq"/>
 	<form id="frm" name="frm" method="post">		
 		<input type="hidden" id="reqst_seq" name="reqst_seq"/>			
 		<h3>신청자 목록</h3>

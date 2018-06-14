@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.lctre.service.LctreService;
 import egovframework.lctre.service.LctreVO;
@@ -117,14 +118,54 @@ public class LctreController {
 		}
 		return "redirect:/edu/lctre/selectLctreList.do";
 	}	
+	// 강의목록_수강신청등록폼_강의명 select (접수가능 버튼 클릭시)
+	@RequestMapping("/edu/lctre/selectReqstForm.do")
+	public String selectReqstForm(HttpServletRequest request	
+			, @ModelAttribute(value="paramVO") LctreVO paramVO
+			, ModelMap model) throws Exception{
+		
+		try{					
+			// 해당 강의번호를 파라미터값으로 넘겨 그에 해당하는 강의명 select 해서 폼에 뿌려주기
+			LctreVO ReqstLctreNm = lctreService.selectReqstForm(paramVO);
+			model.addAttribute("ReqstLctreNm", ReqstLctreNm);
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return "/edu/lctre/reqstForm";
+	}
+	
+	// 수강신청등록폼 --> 등록
+	@RequestMapping("/edu/lctre/insertReqstForm.do")
+	public String insertReqstForm(HttpServletRequest request
+			, @ModelAttribute(value="paramVO") ReqstVO paramVO
+			, ModelMap model) throws Exception{
+		
+		try{			
+			System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@paramVO로 넘어온 신청자명: " + paramVO.getApplcnt_nm());
+									
+			// 파라미터에 담긴 등록폼에서 작성한 값들을 넘기기		
+			int result = lctreService.insertReqstForm(paramVO);		
+			model.addAttribute("result", result);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		//return "redirect:/edu/lctre/selectLctreList.do";
+		return "/edu/lctre/reqstForm";
+	}
 	
 	// 강의목록_신청자목록 (강의중/접수종료 버튼 클릭시)
 	@RequestMapping("/edu/lctre/selectReqstBtnList.do")
 	public String selectReqstBtnList(HttpServletRequest request			
+			, @RequestParam(value="lctre_seq" , required = false) String lctre_seq
 			, @ModelAttribute(value="paramVO") LctreVO paramVO
 			, ModelMap model) throws Exception{
 		
-		try{							
+		try{		
+			System.out.println(">>>>>>>>>>>>>>>>>>>>"+ lctre_seq);
+			paramVO.setLctre_seq(lctre_seq);
 			// 신청자 목록리스트
 			List<ReqstVO> ReqstBtnList = lctreService.selectReqstBtnList(paramVO);
 			model.addAttribute("ReqstBtnList", ReqstBtnList);
@@ -138,16 +179,20 @@ public class LctreController {
 	// 신청자목록_삭제버튼 (신청상태 'C' -> 'N')
 	@RequestMapping("/edu/lctre/modReqstBtnList.do")
 	public String modReqstBtnList(HttpServletRequest request
+			, @RequestParam(value="reqst_seq" , required = false) String reqst_seq
 			, @ModelAttribute(value="paramVO") ReqstVO paramVO
 			, ModelMap model) throws Exception{
 		
-		try{			
-				lctreService.modReqstBtnList(paramVO);							
-			
+		try{		
+			paramVO.setReqst_seq(reqst_seq);
+			int result = lctreService.modReqstBtnList(paramVO);							
+			model.addAttribute("result", result);
+				
 		}catch(Exception e){
 			e.printStackTrace();
-		}
-		return "/edu/lctre/selectReqstBtnList.do";
+		}		
+		//return "/edu/lctre/selectReqstBtnList.do";
+		return "/edu/lctre/reqstList";
 	}
 	
 	// 강의등록폼
@@ -159,7 +204,8 @@ public class LctreController {
 		try{
 			// 강사 comboBox
 			List<LctreVO> lnstrctrCobList = lctreService.selectInstrctrNmCobList(paramVO);			
-			model.addAttribute("lnstrctrCobList", lnstrctrCobList);
+			model.addAttribute("lnstrctrCobList", lnstrctrCobList);		
+			model.addAttribute("lctreVO" , paramVO);
 		
 		}catch(Exception e){
 			e.printStackTrace();
@@ -174,7 +220,7 @@ public class LctreController {
 			, ModelMap model) throws Exception{
 		
 		try{
-			lctreService.insertLctreForm(paramVO);		
+			lctreService.insertLctreForm(paramVO);				
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -203,6 +249,13 @@ public class LctreController {
 			// 상세_신청목록
 			List<ReqstVO> reqstDetail = lctreService.selectReqstList(paramVO);
 			model.addAttribute("reqstDetail", reqstDetail);
+			
+			String[] listLimit = request.getParameter("listLimit").split(",");
+			for(int i=0; i<listLimit.length; i++){
+				paramVO.setListLimit(listLimit[i]);
+			}
+			
+			model.addAttribute("lctreVO", paramVO);
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -301,41 +354,7 @@ public class LctreController {
 		}
 		
 		return "redirect:/edu/lctre/selectLctreList.do";
-	}
-	
-	// 수강신청등록폼_강의명(select)
-	@RequestMapping("/edu/lctre/selectReqstForm.do")
-	public String selectReqstForm(HttpServletRequest request			
-			, @ModelAttribute(value="paramVO") LctreVO paramVO
-			, ModelMap model) throws Exception{
-		
-		try{
-			// 해당 강의번호를 파라미터값으로 넘겨 그에 해당하는 강의명 select 해서 폼에 뿌려주기
-			LctreVO ReqstLctreNm = lctreService.selectReqstForm(paramVO);
-			model.addAttribute("ReqstLctreNm", ReqstLctreNm);
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return "/edu/lctre/reqstForm";
-	}
-	
-	// 수강신청등록폼 --> 등록
-	@RequestMapping("/edu/lctre/insertReqstForm.do")
-	public String insertReqstForm(HttpServletRequest request
-			, @ModelAttribute(value="paramVO") ReqstVO paramVO
-			, ModelMap model) throws Exception{
-		
-		try{
-			// 파라미터에 담긴 등록폼에서 작성한 값들을 넘기기		
-			lctreService.insertReqstForm(paramVO);		
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return "redirect:/edu/lctre/selectLctreList.do";
-	}
-	
+	}		
 }
 	
 

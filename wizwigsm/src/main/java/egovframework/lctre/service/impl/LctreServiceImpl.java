@@ -35,8 +35,8 @@ public class LctreServiceImpl extends EgovAbstractServiceImpl implements LctreSe
 	}	
 	
 	// 강의목록_신청목록_삭제
-	public void modReqstBtnList(ReqstVO paramVO){
-		lctreDAO.modReqstBtnList(paramVO);
+	public int modReqstBtnList(ReqstVO paramVO){
+		return lctreDAO.modReqstBtnList(paramVO);
 	}
 	
 	// 강의목록_모집 COUNT
@@ -95,9 +95,7 @@ public class LctreServiceImpl extends EgovAbstractServiceImpl implements LctreSe
 	}
 	
 	// 수강신청등록
-	public void insertReqstForm(ReqstVO paramVO){
-		lctreDAO.insertReqstForm(paramVO);
-	}
-	
-	
+	public int insertReqstForm(ReqstVO paramVO){
+		return lctreDAO.insertReqstForm(paramVO);
+	}	
 }

@@ -15,7 +15,7 @@ public interface LctreService {
 	public List<ReqstVO> selectReqstBtnList(LctreVO paramVO);	
 	
 	// 강의목록_신청목록_삭제
-	public void modReqstBtnList(ReqstVO paramVO);
+	public int modReqstBtnList(ReqstVO paramVO);
 	
 	// 강의등록_comboBox
 	public List<LctreVO> selectInstrctrNmCobList(LctreVO paramVO);
@@ -45,6 +45,6 @@ public interface LctreService {
 	public LctreVO selectReqstForm(LctreVO pramaVO);
 	
 	// 수강신청등록
-	public void insertReqstForm(ReqstVO paramVO);
+	public int insertReqstForm(ReqstVO paramVO);
 
 }
