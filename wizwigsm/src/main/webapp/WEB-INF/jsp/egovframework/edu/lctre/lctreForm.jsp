@@ -14,8 +14,6 @@
 	}
 </style>  
 <script>
-alert('${lctreVO.listLimit}');
-
 $(function(){
 	$("#lctre_begin").datepicker({
 		  changeMonth: true, // 월을 바꿀수 있는 셀렉트 박스를 표시한다.
@@ -54,9 +52,11 @@ $(function(){
 });
 function fnList(){	
 	var frm = document.frm;
-	frm.action = "/edu/lctre/selectLctreList.do?listLimit=${lctreVO.listLimit}";
+	frm.listLimit.value = '${lctreVO.listLimit}';
+	frm.action = "/edu/lctre/selectLctreList.do";
 	frm.submit();
 }
+
 function fnSubmit(){
 	var frm = document.frm;
 	var sttus = document.getElementsByName('sttus');	/* 강의상태(radio) */
@@ -67,7 +67,7 @@ function fnSubmit(){
 			//alert(sttus[i].value);
 		}
 	}
-
+	frm.listLimit.value = '${lctreVO.listLimit}';
 	frm.action = "/edu/lctre/insertLctreForm.do";
 	frm.submit(); 
 }
@@ -84,6 +84,8 @@ function fnSelInstrctrNm(){
 	<form id="frm" name="frm" method="post">
 		<input type="hidden" id="instrctr_seq" name="instrctr_seq" /> <!-- 강사번호(selectbox) -->
 		<input type="hidden" id="lctre_sttus" name="lctre_sttus" />	<!-- 강의상태(radio) -->
+		<input type="hidden" id="listLimit" name="listLimit" />
+		
 		<table border="1">
 			<tr>
 				<th id="th">강사명</th>

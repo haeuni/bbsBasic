@@ -30,23 +30,23 @@ public class LctreController {
 			, @ModelAttribute(value="paramVO") PageVO paramVO
 			, ModelMap model) throws Exception{
 				
-		try{		  
+		try{		  		
+			// 현재페이지 ( 처음 접속시 무조건 1 페이지)
+			int nowPage = 1;	   
+			// 페이지당 보여줄 게시물 개수 
+			int listLimit = 10;	  
 			
-			int nowPage = 1;	   // 처음 접속시 무조건 1페이지 			 		
-			int listLimit = 10;	   // 보여줄 목록 갯수
-			
-			// 클릭한 페이지가 있으면, 그 페이지 정보를 가져와 현재페이지에 저장.                                                            
+			// 클릭한 페이지가 있으면, 현재페이지에 저장                                                          
 			if(request.getParameter("nowPage") != null) {                                                     
 				nowPage = Integer.parseInt(request.getParameter("nowPage"));                       
 			}
+			// 게시물 개수를 지정하는 select에대한 값이 넘어오면, 저장
 			if(request.getParameter("listLimit") != null) {                                                     
 				listLimit = Integer.parseInt(request.getParameter("listLimit"));                       
 			}
 			
-			// 게시글 총 갯수를 가져오는 메소드를 실행
-			int listCount = lctreService.selectListTotalCount();
-			System.out.println("listCount : " + listCount + "#################");        
-			
+			// 게시글 총 개수를 가져오는 메소드
+			int listCount = lctreService.selectListTotalCount();   			
 			
 			// 전체 페이지중 마지막 페이지                                                                      
 			// ((총목록개수-1) / listLimit) +1;
@@ -65,6 +65,8 @@ public class LctreController {
 			int startRow = (nowPage - 1) * listLimit + 1;
 			int endRow = startRow + listLimit -1;
 			
+			// 전체페이지에서 가장 마지막 페이지인 maxPage보다 보여줄 페이지의 마지막번호를 나타내는 endPage가 더 크면 
+			// 그 마지막페이지가 포함되어 보여지는 부분에 보여줄 endPage에 maxPage를 대입
 			if(endPage > maxPage) {                                                                            
 			    endPage = maxPage;                                                                               
 			}                                                                                           	
@@ -103,9 +105,7 @@ public class LctreController {
 			, @ModelAttribute(value="paramVO") LctreVO paramVO
 			, ModelMap model) throws Exception{
 		
-		try{	
-			
-			System.out.println("#########################################"+request.getParameter("chkInfoArr"));			
+		try{					
 			String[] chkInfoArr = request.getParameter("chkInfoArr").split("/");		
 			
 			for(int i=0; i<chkInfoArr.length; i++){		
@@ -116,9 +116,10 @@ public class LctreController {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		return "redirect:/edu/lctre/selectLctreList.do";
+		return "forward:/edu/lctre/selectLctreList.do";
 	}	
-	// 강의목록_수강신청등록폼_강의명 select (접수가능 버튼 클릭시)
+	
+	// 강의목록_신청등록폼_강의명 select (접수가능 버튼 클릭시)
 	@RequestMapping("/edu/lctre/selectReqstForm.do")
 	public String selectReqstForm(HttpServletRequest request	
 			, @ModelAttribute(value="paramVO") LctreVO paramVO
@@ -128,7 +129,7 @@ public class LctreController {
 			// 해당 강의번호를 파라미터값으로 넘겨 그에 해당하는 강의명 select 해서 폼에 뿌려주기
 			LctreVO ReqstLctreNm = lctreService.selectReqstForm(paramVO);
 			model.addAttribute("ReqstLctreNm", ReqstLctreNm);
-			
+			model.addAttribute("lctreVO", paramVO);			
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -136,7 +137,7 @@ public class LctreController {
 		return "/edu/lctre/reqstForm";
 	}
 	
-	// 수강신청등록폼 --> 등록
+	// 강의목록_신청등록폼 --> 등록처리
 	@RequestMapping("/edu/lctre/insertReqstForm.do")
 	public String insertReqstForm(HttpServletRequest request
 			, @ModelAttribute(value="paramVO") ReqstVO paramVO
@@ -148,7 +149,8 @@ public class LctreController {
 			// 파라미터에 담긴 등록폼에서 작성한 값들을 넘기기		
 			int result = lctreService.insertReqstForm(paramVO);		
 			model.addAttribute("result", result);
-			
+			model.addAttribute("lctreVO", paramVO);
+						
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -169,6 +171,7 @@ public class LctreController {
 			// 신청자 목록리스트
 			List<ReqstVO> ReqstBtnList = lctreService.selectReqstBtnList(paramVO);
 			model.addAttribute("ReqstBtnList", ReqstBtnList);
+			model.addAttribute("lctreVO", paramVO);
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -185,9 +188,11 @@ public class LctreController {
 		
 		try{		
 			paramVO.setReqst_seq(reqst_seq);
-			int result = lctreService.modReqstBtnList(paramVO);							
+			int result = lctreService.modReqstBtnList(paramVO);	
+			
 			model.addAttribute("result", result);
-				
+			model.addAttribute("lctreVO", paramVO);	
+			
 		}catch(Exception e){
 			e.printStackTrace();
 		}		
@@ -205,7 +210,7 @@ public class LctreController {
 			// 강사 comboBox
 			List<LctreVO> lnstrctrCobList = lctreService.selectInstrctrNmCobList(paramVO);			
 			model.addAttribute("lnstrctrCobList", lnstrctrCobList);		
-			model.addAttribute("lctreVO" , paramVO);
+			model.addAttribute("lctreVO", paramVO);
 		
 		}catch(Exception e){
 			e.printStackTrace();
@@ -220,12 +225,12 @@ public class LctreController {
 			, ModelMap model) throws Exception{
 		
 		try{
-			lctreService.insertLctreForm(paramVO);				
+			lctreService.insertLctreForm(paramVO);			
 			
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		return "redirect:/edu/lctre/selectLctreList.do";
+		return "forward:/edu/lctre/selectLctreList.do";
 	}
 	
 	// 강의상세
@@ -249,12 +254,7 @@ public class LctreController {
 			// 상세_신청목록
 			List<ReqstVO> reqstDetail = lctreService.selectReqstList(paramVO);
 			model.addAttribute("reqstDetail", reqstDetail);
-			
-			String[] listLimit = request.getParameter("listLimit").split(",");
-			for(int i=0; i<listLimit.length; i++){
-				paramVO.setListLimit(listLimit[i]);
-			}
-			
+					
 			model.addAttribute("lctreVO", paramVO);
 			
 		}catch(Exception e){
@@ -295,7 +295,7 @@ public class LctreController {
 	
 	// 강의수정폼
 	@RequestMapping("/edu/lctre/updateLctreForm.do")
-	public String updateLctreForm(HttpServletRequest request	
+	public String updateLctreForm(HttpServletRequest request
 			, @ModelAttribute(value="paramVO") LctreVO paramVO
 			, ModelMap model) throws Exception{
 		
@@ -313,6 +313,8 @@ public class LctreController {
 			LctreVO lctreDetail = lctreService.selectLctreDetail(paramVO);
 			model.addAttribute("lctreDetail", lctreDetail);
 			
+			model.addAttribute("lctreVO", paramVO);
+		
 		}catch(Exception e){
 			
 			e.printStackTrace();
@@ -329,6 +331,7 @@ public class LctreController {
 		
 		try{			
 			lctreService.updateLctre(paramVO);			
+			model.addAttribute("lctreVO", paramVO);
 			
 		}catch(Exception e){
 			
@@ -344,16 +347,16 @@ public class LctreController {
 			, @ModelAttribute(value="paramVO") LctreVO paramVO
 			, ModelMap model) throws Exception{
 		
-		try{
-			
+		try{			
 			lctreService.deleteLctre(paramVO);
+			model.addAttribute("lctreVO", paramVO);
 			
 		}catch(Exception e){
 			
 			e.printStackTrace();
 		}
 		
-		return "redirect:/edu/lctre/selectLctreList.do";
+		return "forward:/edu/lctre/selectLctreList.do";
 	}		
 }
 	

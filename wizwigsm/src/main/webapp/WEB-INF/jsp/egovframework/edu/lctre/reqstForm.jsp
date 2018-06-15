@@ -6,10 +6,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script>
-
 function fnSubmit(lctre_seq){
 	var frm = document.frm;
-	frm.lctre_seq.value = lctre_seq;		
+	frm.lctre_seq.value = lctre_seq;	
+	frm.listLimit.value = '${lctreVO.listLimit}';
 	
 	if(frm.applcnt_nm.value != ""){
 		frm.action = "/edu/lctre/insertReqstForm.do"; 	
@@ -24,7 +24,7 @@ if('${result}' != "")
 {	
 	if('${result}' == 1){
 		alert("성공");
-		window.opener.parent.location="/edu/lctre/selectLctreList.do";
+		window.opener.parent.location="forward:/edu/lctre/selectLctreList.do";
 		self.close();
 	}else{
 		alert("실패");	
@@ -32,10 +32,7 @@ if('${result}' != "")
 }
 
 function fnList(){	
-	/* var frm = document.frm;
-	frm.action = "/edu/lctre/selectLctreList.do";
-	frm.submit(); */
-	window.opener.parent.location="/edu/lctre/selectLctreList.do";
+	window.opener.parent.location="forward:/edu/lctre/selectLctreList.do";
 	self.close();
 }
 </script>
@@ -44,6 +41,8 @@ function fnList(){
 	<h3>강의신청</h3>
 	<form id="frm" name="frm" method="post">
 		<input type="hidden" id="lctre_seq" name="lctre_seq"/>
+		<input type="hidden" id="listLimit" name="listLimit" />
+		
 		<table border="1">
 			<tr>
 				<th>강의명</th>

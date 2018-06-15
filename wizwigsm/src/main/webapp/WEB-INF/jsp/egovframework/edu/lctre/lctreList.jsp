@@ -46,30 +46,20 @@
 /* 접수가능 버튼 */
 function fnReqstForm(lctre_seq){	
 	var frm = document.frm;	
-	var url = "/edu/lctre/selectReqstForm.do?lctre_seq="+ lctre_seq;	
+	var url = "/edu/lctre/selectReqstForm.do?lctre_seq="+ lctre_seq + "&listLimit=${pageVO.listLimit}";	
 	window.open(url,"", "width=500, height=700");
-	
-	// popReqstForm = window.open(url,"", "width=500, height=700");
-	/* frm을 target으로 하겠다. */
-	//frm.target = "popReqstForm";
-	// frm.lctre_seq.value = lctre_seq;
-	//frm.action = "/edu/lctre/selectReqstForm.do";	
-	//frm.submit();
 }
 /* 강의중,접수종료 버튼 */
 function fnReqstList(lctre_seq, lctre_nm){	
 	var frm = document.frm;
-	var url = "/edu/lctre/selectReqstBtnList.do?lctre_seq="+ lctre_seq; 
-	window.open(url,"", "width=500, height=700"); 
-	
-	//frm.target = "popReqstList";
-	//frm.action = "/edu/lctre/selectReqstBtnList.do"; 
-	//frm.submit(); 
+	var url = "/edu/lctre/selectReqstBtnList.do?lctre_seq="+ lctre_seq + "&listLimit=${pageVO.listLimit}";	 
+	window.open(url,"", "width=500, height=700");  
 }
 /* 강의등록버튼 */
 function fnLctreForm(){	
 	var frm = document.frm;
-	frm.action = "/edu/lctre/selectLctreForm.do?listLimit=${pageVO.listLimit}";
+	frm.listLimit.value = '${pageVO.listLimit}';
+	frm.action = "/edu/lctre/selectLctreForm.do";
 	frm.submit();
 }
 /* 선택삭제버튼 */
@@ -104,6 +94,7 @@ function fnChkDel(){
 			checkRow = '';    //checkRow초기화.
 		}		
 	}
+	frm.listLimit.value = '${pageVO.listLimit}';
 	frm.chkInfoArr.value = rowInfo;
 	frm.action = "/edu/lctre/deleteLctreList.do";
 	frm.submit();
@@ -112,7 +103,8 @@ function fnChkDel(){
 function fnDetail(lctre_seq){
 	var frm = document.frm;
 	frm.lctre_seq.value = lctre_seq;
-	frm.action = "/edu/lctre/selectLctreDetail.do?listLimit=${pageVO.listLimit}";
+	frm.listLimit.value = '${pageVO.listLimit}';
+	frm.action = "/edu/lctre/selectLctreDetail.do";
 	frm.submit();
 }
 /* 목록 갯수 select */
@@ -124,14 +116,6 @@ function fnSelListLimit(){
 	frm.action = "/edu/lctre/selectLctreList.do";
 	frm.submit(); 
 }
-
-function fnPage(){
-	alert(1); 
-	var frm = document.frm;
-	frm.action = "/edu/lctre/selectLctreList.do?nowPage=1&listLimit=${pageVO.listLimit}";
-	frm.submit();
-}
-
 </script>
 </head>
 <body>
@@ -144,7 +128,7 @@ function fnPage(){
 	<form id="frm" name="frm" method="post">		
 		<input type="hidden" id="lctre_seq" name="lctre_seq" />	
 		<input type="hidden" id="chkInfoArr" name="chkInfoArr" />
-		<input type="hidden" id="listLimit" name="listLimit"/>
+		<input type="hidden" id="listLimit" name="listLimit" />
 	
 		<h3>강의목록</h3>				
 		<select id="selListLimit" name="selListLimit" onchange="fnSelListLimit();">

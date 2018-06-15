@@ -39,10 +39,9 @@
 	frm.submit();
 } */
 /* 강의목록 */
-alert('${lctreVO.listLimit}');
-
 function fnList(){
 	var frm = document.frm;
+	frm.listLimit.value = '${lctreVO.listLimit}';
 	frm.action = "/edu/lctre/selectLctreList.do";
 	frm.submit();
 }
@@ -50,6 +49,7 @@ function fnList(){
 function fnUpdate(lctre_seq){
 	var frm = document.frm;
 	frm.lctre_seq.value = lctre_seq;
+	frm.listLimit.value = '${lctreVO.listLimit}';
 	frm.action = "/edu/lctre/updateLctreForm.do";
 	frm.submit();
 }
@@ -91,6 +91,8 @@ function fnSubmit(){
  	}else{	
 	 	frm.reqstNumArr.value = reqstNumArr;
 	 	frm.reqstSttusArr.value = reqstSttusArr; 
+	 	frm.listLimit.value = '${lctreVO.listLimit}';
+	 	
 	 	frm.action = "/edu/lctre/modReqstForm.do";
 		frm.submit();
  	}	
@@ -103,6 +105,7 @@ function fnSubmit(){
 		<input type="hidden" id="lctre_sttus" name="lctre_sttus"/>
 		<input type="hidden" id="reqstNumArr" name="reqstNumArr"/>
 		<input type="hidden" id="reqstSttusArr" name="reqstSttusArr"/>
+		<input type="hidden" id="listLimit" name="listLimit"/>
 		
 		<h3>강의상세</h3>
 		<table border="1">

@@ -48,12 +48,14 @@ $(function(){
 /* 목록으로 넘겨줄 스크립트 */
 function fnList(){	
 	var frm = document.frm;
+	frm.listLimit.value = '${lctreVO.listLimit}';
 	frm.action ="/edu/lctre/selectLctreList.do";
 	frm.submit();
 }
 /* 삭제로 넘겨줄 스크립트 */
 function fnDelete(){	
 	var frm = document.frm;
+	frm.listLimit.value = '${lctreVO.listLimit}';
 	frm.action ="/edu/lctre/deleteLctre.do";
 	frm.submit();
 }
@@ -67,6 +69,7 @@ function fnSelValue(){
 function fnUpdate(){
 	var frm = document.frm;
 	var sttus = document.getElementsByName('sttus');	/* 강의상태(radio) */
+	frm.listLimit.value = '${lctreVO.listLimit}';
 		
 	for(var i=0; i<sttus.length; i++){
 		if(sttus[i].checked){
@@ -89,6 +92,8 @@ function fnUpdate(){
 		<input type="hidden" id="instrctr_seq" name="instrctr_seq" value="${lctreDetail.instrctr_seq}"/>
 		<!-- 강의상태(radio) -->
 		<input type="hidden" id="lctre_sttus" name="lctre_sttus" />	
+		
+		<input type="hidden" id="listLimit" name="listLimit" />
 		
 		<h3>게시판수정</h3>
 		<table border="1">
@@ -137,7 +142,7 @@ function fnUpdate(){
 				<th>모집인원</th>
 				<td colspan="5">
 					<!-- 넘겨받은 lctreDatail의 모집인원을 input에 뿌여준다. -->
-					<input type="text" id="rcrundt" name="rcrundt" value="${lctreDetail.rcrundt}"/>
+					<input type="number" id="rcrundt" name="rcrundt" min="5" value="${lctreDetail.rcrundt}"/>
 				</td>
 			</tr>
 			<tr>
