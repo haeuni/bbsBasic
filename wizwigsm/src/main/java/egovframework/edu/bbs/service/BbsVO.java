@@ -16,8 +16,7 @@ public class BbsVO {
 	}
 	public void setId(String id) {
 		this.id = id;
-	}
-	
+	}	
 	public String getTitle() {
 		return title;
 	}
@@ -53,6 +52,5 @@ public class BbsVO {
 	}
 	public void setUse_at(String use_at) {
 		this.use_at = use_at;
-	}
-	
+	}	
 }
