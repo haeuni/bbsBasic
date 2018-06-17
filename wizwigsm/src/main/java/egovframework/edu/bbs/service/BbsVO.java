@@ -2,8 +2,7 @@ package egovframework.edu.bbs.service;
 
 public class BbsVO {
 	
-	private String id;	//PK
-	
+	private String id;	//PK	
 	private String title;
 	private String cn;
 	private String usr_nm;
