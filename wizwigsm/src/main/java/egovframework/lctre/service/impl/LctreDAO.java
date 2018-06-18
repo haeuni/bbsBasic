@@ -17,7 +17,7 @@ public class LctreDAO extends EgovComAbstractDAO {
 		return (List<LctreVO>)list("LctreDAO.selectLctreList", paramVO);	
 	}		
 	
-	// 강의목록_ 전제사이즈 count7
+	// 강의목록_ 전제사이즈 count
 	public int selectListTotalCount(){
 		return (int) select("LctreDAO.selectListTotalCount");
 	}

@@ -18,15 +18,10 @@
 	}
 </style>
 <script type="text/javascript">
-alert('${lctreVO.listLimit}');
-alert('${lctreVO.lctre_seq}');
 /* 삭제버튼(신청상태 'c'를 'n'으로 바꿈) */
 function fnUpdate(reqst_seq){
 	var frm = document.frm;
- 	frm.reqst_seq.value = reqst_seq;
- 	frm.lctre_seq.value = '${lctreVO.lctre_seq}';
- 	frm.listLimit.value = '${lctreVO.listLimit}';
- 	
+ 	frm.reqst_seq.value = reqst_seq;	
 	frm.action = "/edu/lctre/modReqstBtnList.do";
 	frm.submit();	
 }

@@ -37,8 +37,7 @@
 	            ORDER BY LCT.LCTRE_SEQ DESC 
 	            ) A
 	        )
-	    WHERE RNUM BETWEEN #startRow# AND #endRow#
-	      
+	    WHERE RNUM BETWEEN #startRow# AND #endRow#	      
 		]]> 	
 	</select> 	
 	
