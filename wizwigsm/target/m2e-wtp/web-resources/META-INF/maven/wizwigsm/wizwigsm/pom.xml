@@ -313,6 +313,7 @@
             <version>2.2.0</version>
         </dependency>
 	
+	<!-- Apache에서 제공하는 Common FileUpload 라이브러리 -->
 	<dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>

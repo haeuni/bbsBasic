@@ -43,6 +43,8 @@
 	}
 </style>
 <script type="text/javascript">
+alert("${pageVO.selListSearchField }" + "/" + "${pageVO.listSearchText}");
+
 /* 접수가능 버튼 */
 function fnReqstForm(lctre_seq){	
 	var frm = document.frm;	
@@ -83,13 +85,7 @@ function fnChkDel(){
 			if(checkCnt == 1){	
 				rowInfo += checkRow + "";	// 체크된 체크박스 개수 한개 일때,
 			}else{
-				rowInfo += checkRow + "/";	// 체크된 체크박스 개수 한개 이상일때,
-				
-				/* if(i == checkLast){		체크된 체크박스중 마지막 체크박스일때 
-					rowInfo += checkRow ;	 마지막 체크박스라면, 뒤에 '/'문자열을 붙이지 않는다.
-				}else{	
-					rowInfo += checkRow + "/";	
-				}		 */	
+				rowInfo += checkRow + "/";	// 체크된 체크박스 개수 한개 이상일때,	
 			}
 			checkRow = '';    //checkRow초기화.
 		}		
@@ -116,9 +112,35 @@ function fnSelListLimit(){
 	frm.action = "/edu/lctre/selectLctreList.do";
 	frm.submit(); 
 }
+
+/* 검색 */
+function fnListSearch(){
+	var frm = document.frm;
+	var search = frm.listSearchText.value;	//검색창에 입력한 테스트 확인.
+	if(search == ""){
+		alert("검색어를 입력해주세요.");
+		return;
+	}	
+	
+	frm.action = "/edu/lctre/selectLctreList.do";
+	frm.submit();	
+} 
+/*  */
+function fnSelListSearch(){
+	var frm = document.frm;
+	var sel = frm.selListSearchField.options[frm.selListSearchField.selectedIndex].value; // 검색필드 선택값
+	if(sel == 'all'){
+		alert("전체보기");
+		
+		frm.listSearchText.value = "";
+	}
+	frm.action = "/edu/lctre/selectLctreList.do";
+	frm.submit();
+}
 </script>
 </head>
 <body>
+
 	<!-- 오늘날짜 -->
 	<c:set var="today" value="<%=new java.util.Date()%>" />	
 	<!-- 현재날짜타입을 해당패턴으로 변환 -->
@@ -128,14 +150,25 @@ function fnSelListLimit(){
 	<form id="frm" name="frm" method="post">		
 		<input type="hidden" id="lctre_seq" name="lctre_seq" />	
 		<input type="hidden" id="chkInfoArr" name="chkInfoArr" />
-		<input type="hidden" id="listLimit" name="listLimit" />
+		<input type="hidden" id="listLimit" name="listLimit" value="${pageVO.listLimit}" /> 	
 	
-		<h3>강의목록</h3>				
+		<h3>강의목록</h3>
+		<!-- 목록개수 선택 -->				
 		<select id="selListLimit" name="selListLimit" onchange="fnSelListLimit();">
-				<option value="10" <c:if test="${pageVO.listLimit eq 10}">selected</c:if>>10개씩</option>
-				<option value="20" <c:if test="${pageVO.listLimit eq 20}">selected</c:if>>20개씩</option>
-				<option value="30" <c:if test="${pageVO.listLimit eq 30}">selected</c:if>>30개씩</option>
-		</select>						
+			<option value="10"  selected="selected" <c:if test="${pageVO.listLimit eq 10}">selected</c:if>>10개씩</option>
+			<option value="20" <c:if test="${pageVO.listLimit eq 20}">selected</c:if>>20개씩</option>
+			<option value="30" <c:if test="${pageVO.listLimit eq 30}">selected</c:if>>30개씩</option>
+		</select>
+		<!-- 검색필드 -->
+		<select id="selListSearchField" name="selListSearchField" onchange="fnSelListSearch();" style="margin-left:185px;">
+			<option value="all" selected="selected" <c:if test="${pageVO.selListSearchField eq 'all'}">selected</c:if>>전체보기</option>
+			<option value="lctre_nm" <c:if test="${pageVO.selListSearchField eq 'lctre_nm'}">selected</c:if>>강의명</option>
+			<option value="instrctr_nm" <c:if test="${pageVO.selListSearchField eq 'instrctr_nm'}">selected</c:if>>강사명</option>
+		</select>
+		<!-- 검색/버튼 -->
+		<input type="text" id="listSearchText" name="listSearchText" value="${pageVO.listSearchText}" style="margin-bottom: 7px;"/>
+		<input type="button" value="검색" onclick="fnListSearch();"/>
+		
 		<table border="1">
 			<tr>
 				<th></th>	
@@ -187,7 +220,7 @@ function fnSelListLimit(){
 					<c:otherwise>-</c:otherwise>
 				</c:choose>
 				</td>
-							
+					
 				<!-- 등록일 -->
 				<td id="date"><c:out value="${result.frst_regist_pnttm}"/></td>			
 			</tr>
@@ -212,7 +245,7 @@ function fnSelListLimit(){
 		    <c:choose >                                                                    
 		        <c:when test="${pageVO.nowPage eq page}">${page}</c:when>                                                                                                                             
 		        <c:otherwise>                                                       
-		            <a href="/edu/lctre/selectLctreList.do?nowPage=${page}&listLimit=${pageVO.listLimit}" style="color:#cecece;">${page}</a>      
+		            <a href="/edu/lctre/selectLctreList.do?nowPage=${page}&listLimit=${pageVO.listLimit}&selListSearchField=${pageVO.selListSearchField}&listSearchText=${pageVO.listSearchText}" style="color:#cecece;">${page}</a>      
 		        </c:otherwise>                                                             
 		    </c:choose>                                                                    
 		</c:forEach>                                                                             

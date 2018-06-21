@@ -9,7 +9,7 @@ public interface LctreService {
 	public List<LctreVO> selectLctreList(PageVO paramVO);
 	
 	// 강의목록_전체목록 count
-	public int selectListTotalCount();
+	public int selectListTotalCount(PageVO paramVO);
 	
 	// 강의목록_신청목록(접수중, 접수종료버튼 클릭시)
 	public List<ReqstVO> selectReqstBtnList(LctreVO paramVO);	

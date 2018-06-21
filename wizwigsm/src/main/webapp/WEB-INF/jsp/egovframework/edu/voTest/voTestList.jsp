@@ -51,9 +51,5 @@ function fnSubmit() {
 		</c:forEach>
 		</c:if>		
 	</table>	
-	
-	
-	
-	
 </body>
 </html>

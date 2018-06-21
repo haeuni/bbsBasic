@@ -81,7 +81,8 @@ function fnSelInstrctrNm(){
 </head>
 <body>
 	<h3>강의등록</h3>
-	<form id="frm" name="frm" method="post">
+	<!-- 파일등록을 위한 속성 : enctype="multipart/form-data" -->
+	<form id="frm" name="frm" method="post" enctype="multipart/form-data">
 		<input type="hidden" id="instrctr_seq" name="instrctr_seq" /> <!-- 강사번호(selectbox) -->
 		<input type="hidden" id="lctre_sttus" name="lctre_sttus" />	<!-- 강의상태(radio) -->
 		<input type="hidden" id="listLimit" name="listLimit" />
@@ -122,6 +123,12 @@ function fnSelInstrctrNm(){
 					<input type="radio" name="sttus" value="R" checked="checked"/>접수중
 					<input type="radio" name="sttus" value="N" />접수종료 
 				</td>	
+			</tr>
+			<tr>
+				<!-- <th class="th">파일첨부</th>
+				<td>
+					<input type="file" id="lctre_file" name="lctre_file" />
+				</td> -->
 			</tr>
 			<tr>
 				<th class="th"></th>

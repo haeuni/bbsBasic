@@ -1,5 +1,6 @@
 package egovframework.lctre.web;
 
+import java.io.File;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -10,6 +11,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import egovframework.lctre.service.LctreService;
 import egovframework.lctre.service.LctreVO;
@@ -25,59 +27,92 @@ public class LctreController {
 	private LctreService lctreService;
 	
 	// 강의목록
+	//@RequestParam 지정된 변수값이 넘어오지 않으면 400에러
+	//required=false 필수 항목이 아님, 기본값은 required=true
+	//defaultValue ="기본값"
 	@RequestMapping("/edu/lctre/selectLctreList.do")
-	public String selectLctreList(HttpServletRequest request	
+	public String selectLctreList(HttpServletRequest request
+			/*, @RequestParam(required= false) String listSearchField
+			, @RequestParam(required= false) String listSearchText*/
 			, @ModelAttribute(value="paramVO") PageVO paramVO
 			, ModelMap model) throws Exception{
 				
-		try{		  		                                             
-			// 현재페이지 ( 처음 접속시 무조건 1 페이지)
-			int nowPage = 1;	   
-			// 페이지당 보여줄 게시물 개수 
-			int listLimit = 10;	  
+		try{	
+			/* search */
+				String selListSearchField = "";
+				String listSearchText = "";
+				
+				if(request.getParameter("selListSearchField") != null){	 
+					selListSearchField = request.getParameter("selListSearchField");
+					System.out.println("###################### 넘어온 값" + selListSearchField);
+				}
+				if(request.getParameter("listSearchText") != null){
+					listSearchText = request.getParameter("listSearchText");
+					System.out.println("###################### 넘어온 값" + listSearchText);
+	
+					// 검색한 정보를 session에 실어 상태유지
+					/*request.getSession().setAttribute("selListSearchField", selListSearchField);
+					request.getSession().setAttribute("listSearchText", listSearchText);*/
+				}/*else if(request.getSession().getAttribute("selListSearchField") != null){
+					// 만약에 session에 selListSearch의 값이 실렸다면 변수에 저장하여 vo에게 전달해준다.
+					selListSearchField = (String)request.getSession().getAttribute("selListSearchField");
+					listSearchText = (String)request.getSession().getAttribute("listSearchText");			
+				}*/
 			
-			// 클릭한 페이지가 있으면, 현재페이지에 저장                                                          
-			if(request.getParameter("nowPage") != null) {                                                     
-				nowPage = Integer.parseInt(request.getParameter("nowPage"));                       
-			}
-			// 게시물 개수를 지정하는 select에대한 값이 넘어오면, 저장
-			if(request.getParameter("listLimit") != null) {                                                     
-				listLimit = Integer.parseInt(request.getParameter("listLimit"));                       
-			}
+			/* page */
 			
-			// 게시글 총 개수를 가져오는 메소드
-			int listCount = lctreService.selectListTotalCount();   			
+				// 현재페이지 (처음 접속시 무조건 1 페이지)
+				int nowPage = 1;	   
+				// 페이지당 보여줄 게시물 개수 
+				int listLimit = 10;				
+												
+				// 클릭한 페이지가 있으면, 현재페이지에 저장                                                          
+				if(request.getParameter("nowPage") != null) {                                                     
+					nowPage = Integer.parseInt(request.getParameter("nowPage"));                       
+				}
+				// 게시물 개수를 지정하는 select에대한 값이 넘어오면, 저장
+				if(request.getParameter("listLimit") != null) {                                                     
+					listLimit = Integer.parseInt(request.getParameter("listLimit"));
+				}				
+				/*if(request.getParameter("listSearchText") == null){
+					listSearchText = "file";
+				}
+				*/
+				
+				// 게시글 총 개수를 가져오는 메소드
+				int listCount = lctreService.selectListTotalCount(paramVO);   			
+				
+				// 전체 페이지중 마지막 페이지                                                                      
+				// ((총목록개수-1) / listLimit) +1;
+				// (ex) ((112-1) / 10 ) +1 = 12 페이지
+				int maxPage = ((listCount-1) / listLimit) +1;
+				
+				// starPage를 구하기 위한 공식.                                                                  
+				// 만약 페이지의 일의 자리 수가 0이 아니면 십의자리수가 -1이 되는 페이지가 되어버린다.  
+				// 이를 방지 하기 위해 페이지는 0.1~ 0.9 까지의 결과값이 나올 때 더해서 1이 올라가게 하는 숫자인 0.9를 더하여  
+				// 한자리를 높여주게 되면 모든 결과가 동일한 십의 자리 수를 갖게 된다.                                                                                                                                                         
+				int startPage = (((int)((double) nowPage / 10 + 0.9 )) -1) * listLimit + 1 ;  
+				int endPage = startPage + 9;      			
+				
+				// #startRow# = (현재페이지-1) * 목록수 +1 
+				// #endRow# = 시작번호 + 목록수 -1
+				int startRow = (nowPage - 1) * listLimit + 1;
+				int endRow = startRow + listLimit -1;
+				
+				// 전체페이지에서 가장 마지막 페이지인 maxPage보다 보여줄 페이지의 마지막번호를 나타내는 endPage가 더 크면 
+				// 그 마지막페이지가 포함되어 보여지는 부분에 보여줄 endPage에 maxPage를 대입
+				if(endPage > maxPage) {                                                                            
+				    endPage = maxPage;                                                                               
+				}                                                                                           	
 			
-			// 전체 페이지중 마지막 페이지                                                                      
-			// ((총목록개수-1) / listLimit) +1;
-			// (ex) ((112-1) / 10 ) +1 = 12 페이지
-			int maxPage = ((listCount-1) / listLimit) +1;
-			
-			// starPage를 구하기 위한 공식.                                                                  
-			// 만약 페이지의 일의 자리 수가 0이 아니면 십의자리수가 -1이 되는 페이지가 되어버린다.  
-			// 이를 방지 하기 위해 페이지는 0.1~ 0.9 까지의 결과값이 나올 때 더해서 1이 올라가게 하는 숫자인 0.9를 더하여  
-			// 한자리를 높여주게 되면 모든 결과가 동일한 십의 자리 수를 갖게 된다.                                                                                                                                                         
-			int startPage = (((int)((double) nowPage / 10 + 0.9 )) -1) * listLimit + 1 ;  
-			int endPage = startPage + 9;      			
-			
-			// #startRow# = (현재페이지-1) * 목록수 +1 
-			// #endRow# = 시작번호 + 목록수 -1
-			int startRow = (nowPage - 1) * listLimit + 1;
-			int endRow = startRow + listLimit -1;
-			
-			// 전체페이지에서 가장 마지막 페이지인 maxPage보다 보여줄 페이지의 마지막번호를 나타내는 endPage가 더 크면 
-			// 그 마지막페이지가 포함되어 보여지는 부분에 보여줄 endPage에 maxPage를 대입
-			if(endPage > maxPage) {                                                                            
-			    endPage = maxPage;                                                                               
-			}                                                                                           	
-			
-			paramVO.setNowPage(nowPage);
-			paramVO.setStartPage(startPage);
-			paramVO.setEndPage(endPage);
-			paramVO.setMaxPage(maxPage);
-			paramVO.setListLimit(listLimit);
-			paramVO.setStartRow(startRow);
-			paramVO.setEndRow(endRow);
+			/* search */					
+			paramVO.setNowPage(Integer.toString(nowPage));
+			paramVO.setStartPage(Integer.toString(startPage));
+			paramVO.setEndPage(Integer.toString(endPage));
+			paramVO.setMaxPage(Integer.toString(maxPage));
+			paramVO.setListLimit(Integer.toString(listLimit));
+			paramVO.setStartRow(Integer.toString(startRow));
+			paramVO.setEndRow(Integer.toString(endRow));			
 			
 			System.out.println("현재페이지: " + paramVO.getNowPage());
 			System.out.println("시작페이지: " + paramVO.getStartPage());
@@ -86,8 +121,9 @@ public class LctreController {
 			System.out.println("목록 Limit: " + paramVO.getListLimit());
 			System.out.println("시작글번호: " + paramVO.getStartRow());
 			System.out.println("마지막글번호: " + paramVO.getEndRow());
+			System.out.println("검색필드:" + paramVO.getSelListSearchField());
+			System.out.println("검색어: " + paramVO.getListSearchText());
 			
-			// 해당 페이지에 출력될 게시글을 listLimit 만큼만 가져오기 위한 메소드                                                      
 			List<LctreVO> lctreList = lctreService.selectLctreList(paramVO);                                                
 			
 			//페이징 처리 정보와 게시글 목록 정보 model에 담아 포워드.	
@@ -99,6 +135,7 @@ public class LctreController {
 		} 
 		return "/edu/lctre/lctreList";
 	}	
+	
 	// 강의목록_체크삭제버튼
 	@RequestMapping("/edu/lctre/deleteLctreList.do")
 	public String deleteLctreList(HttpServletRequest request			
@@ -220,12 +257,17 @@ public class LctreController {
 	// 강의등록_insert
 	@RequestMapping("/edu/lctre/insertLctreForm.do")
 	public String insertLctreForm(HttpServletRequest request
+			//, @RequestParam("lctre_file") MultipartFile file
 			, @ModelAttribute(value="paramVO") LctreVO paramVO
 			, ModelMap model) throws Exception{
 		
-		try{
-			lctreService.insertLctreForm(paramVO);			
+		try{			
+			// 첨부파일
+			//File filePath = new File("C://Users/pc/images/" + file.getOriginalFilename());
+			//file.transferTo(filePath);
 			
+			lctreService.insertLctreForm(paramVO);			
+						
 		}catch(Exception e){
 			e.printStackTrace();
 		}

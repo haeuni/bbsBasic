@@ -1,5 +1,7 @@
 package egovframework.lctre.service;
 
+import org.springframework.web.multipart.MultipartFile;
+
 // 강의 
 public class LctreVO {
 	
@@ -19,6 +21,8 @@ public class LctreVO {
 	private String reqst_cnt;				// 신청 count한 값
 	private String listLimit; 				// 한 페이지에 게시글이 몇개가 보여질지 표시.
 
+	private MultipartFile lctre_file;		// 파일		
+	
 	public String getLctre_seq() {
 		return lctre_seq;
 	}
@@ -130,6 +134,12 @@ public class LctreVO {
 	public void setListLimit(String listLimit) {
 		this.listLimit = listLimit;
 	}
-	
-	
+
+	public MultipartFile getLctre_file() {
+		return lctre_file;
+	}
+
+	public void setLctre_file(MultipartFile lctre_file) {
+		this.lctre_file = lctre_file;
+	}
 }

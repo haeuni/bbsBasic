@@ -8,47 +8,72 @@
 	<typeAlias  alias="InstrctrVO" type="egovframework.lctre.service.InstrctrVO"/>
 	<typeAlias  alias="ReqstVO" type="egovframework.lctre.service.ReqstVO"/>
 	<typeAlias  alias="PageVO" type="egovframework.lctre.service.PageVO"/>
-	
-	<!-- 화면01_강의목록  -->
+
+	<!-- 강의목록  -->
 	<select id="LctreDAO.selectLctreList" parameterClass="PageVO" resultClass="LctreVO">				
 		<![CDATA[
-		SELECT *	
-		FROM(
-			SELECT ROWNUM AS RNUM, A.*
+			SELECT *	
 			FROM(
-				SELECT LCT.LCTRE_SEQ
-	                    , LCT.LCTRE_NM
-	                    , INS.INSTRCTR_NM
-	                    , LCT.RCRUNDT
-	                    , TO_CHAR(LCT.FRST_REGIST_PNTTM, 'YYYY-MM-DD') AS "FRST_REGIST_PNTTM"
-	                    , LCT.RDCNT
-	                    , (SELECT COUNT(REQ.REQST_SEQ)
-								FROM T_REQST REQ
-								WHERE 1=1
-								AND REQ.LCTRE_STTUS = 'C'
-								AND REQ.LCTRE_SEQ = LCT.LCTRE_SEQ) AS REQST_CNT
-					    , LCT.LCTRE_BEGIN
-	                    , LCT.LCTRE_ENDDE
-					    , LCT.LCTRE_STTUS
-	            FROM T_LCTRE LCT, T_INSTRCTR INS
-	            WHERE 1=1 
-	            AND LCT.INSTRCTR_SEQ = INS.INSTRCTR_SEQ
-	            AND LCT.USE_AT = 'Y'            
-	            ORDER BY LCT.LCTRE_SEQ DESC 
-	            ) A
-	        )
-	    WHERE RNUM BETWEEN #startRow# AND #endRow#	      
+				SELECT ROWNUM AS RNUM, A.*
+				FROM(
+					SELECT LCT.LCTRE_SEQ
+		                    , LCT.LCTRE_NM
+		                    , INS.INSTRCTR_NM
+		                    , LCT.RCRUNDT
+		                    , TO_CHAR(LCT.FRST_REGIST_PNTTM, 'YYYY-MM-DD') AS "FRST_REGIST_PNTTM"
+		                    , LCT.RDCNT
+		                    , (SELECT COUNT(REQ.REQST_SEQ)
+									FROM T_REQST REQ
+									WHERE 1=1
+									AND REQ.LCTRE_STTUS = 'C'
+									AND REQ.LCTRE_SEQ = LCT.LCTRE_SEQ) AS REQST_CNT
+						    , LCT.LCTRE_BEGIN
+		                    , LCT.LCTRE_ENDDE
+						    , LCT.LCTRE_STTUS
+		            FROM T_LCTRE LCT, T_INSTRCTR INS
+		            WHERE 1=1 
+		            AND LCT.INSTRCTR_SEQ = INS.INSTRCTR_SEQ
+		            AND LCT.USE_AT = 'Y'  									
+					]]>
+					
+					<!-- listSearchText(검색어) 값이 비어있지 않다면 -->
+					<isNotNull property="listSearchText">
+						<!-- listSearchField(검색필드) 값 -->
+						<isEqual property="selListSearchField" compareValue="lctre_nm">
+							AND LCT.LCTRE_NM LIKE '%'||#listSearchText#||'%'
+						</isEqual>
+						<isEqual property="selListSearchField" compareValue="instrctr_nm">
+							AND INS.INSTRCTR_NM LIKE '%'||#listSearchText#||'%'
+						</isEqual>
+					</isNotNull>
+					            
+		            <![CDATA[
+		            ORDER BY LCT.LCTRE_SEQ DESC 
+		            ) A
+		        )
+		    WHERE RNUM BETWEEN #startRow# AND #endRow#	       
 		]]> 	
-	</select> 	
+	</select>
 	
-	<!-- 전체 게시글 수 구하는 sql문 --> 
-	<select id="LctreDAO.selectListTotalCount" resultClass="java.lang.Integer">
+	<!-- 전체 게시글 수 (페이징)--> 
+	<select id="LctreDAO.selectListTotalCount" parameterClass="PageVO" resultClass="java.lang.Integer">
 		<![CDATA[
 			SELECT COUNT(*) 
-			FROM T_LCTRE
-			WHERE 1=1
-			AND USE_AT = 'Y'
+			FROM T_LCTRE LCT, T_INSTRCTR INS
+		            WHERE 1=1 
+		            AND LCT.INSTRCTR_SEQ = INS.INSTRCTR_SEQ
+		            AND LCT.USE_AT = 'Y'  									
 		]]>
+		<!-- listSearchText(검색어) 값이 비어있지 않다면 -->
+		<isNotNull property="listSearchText">
+			<!-- listSearchField(검색필드) 값 -->
+			<isEqual property="selListSearchField" compareValue="lctre_nm">
+				AND LCT.LCTRE_NM LIKE '%'||#listSearchText#||'%'
+			</isEqual>
+			<isEqual property="selListSearchField" compareValue="instrctr_nm">
+				AND INS.INSTRCTR_NM LIKE '%'||#listSearchText#||'%'
+			</isEqual>
+		</isNotNull>
 	</select>
 	
 	<!-- 강의목록_수강신청등록폼_강의명 select(접수가능 버튼클릭시) -->
@@ -118,7 +143,7 @@
 		]]>
 	</select>
 
-	<!-- 화면02_강의등록폼 -->
+	<!-- 강의등록폼 -->
 	<insert id="LctreDAO.insertLctreForm" parameterClass="LctreVO">
 		<![CDATA[
 			INSERT INTO T_LCTRE
@@ -172,7 +197,7 @@
 		]]>
 	</update>
 	
-	<!-- 화면03_강의상세보기 -->
+	<!-- 강의상세 -->
 	<select id="LctreDAO.selectLctreDetail" parameterClass="LctreVO" resultClass="LctreVO">
 		<![CDATA[
 			SELECT LCT.LCTRE_SEQ
@@ -195,7 +220,7 @@
 		]]>
 	</select>	
 	
-	<!-- 화면03_강의상세_현재강의 신청목록 출력 -->
+	<!-- 강의상세_현재강의 신청목록 출력 -->
 	<select id="LctreDAO.selectReqstList" parameterClass="LctreVO" resultClass="ReqstVO">
 		<![CDATA[
 			SELECT REQST_SEQ
@@ -209,7 +234,7 @@
 		]]>	
 	</select>
 	
-	<!-- 화면03_강의상세_신청목록_신청상태 저장 -->
+	<!-- 강의상세_신청목록_신청상태 저장 -->
 	<update id="LctreDAO.modReqstSttus" parameterClass="ReqstVO">
 		<![CDATA[
 			UPDATE T_REQST
@@ -219,7 +244,7 @@
 		]]>
 	</update>
 	
-	<!-- 화면04_강의수정 -->
+	<!-- 강의수정 -->
 	<update id="LctreDAO.updateLctre" parameterClass="LctreVO">
 		<![CDATA[
 			UPDATE T_LCTRE
@@ -235,7 +260,7 @@
 		]]>
 	</update>
 	
-	<!-- 화면04_강의삭제 -->
+	<!-- 강의삭제 -->
 	<!-- 단, 실제로 DELETE를 수행하지 않고 'USE_AT'값을 'N'로 변경해 강의목록에 나오지 않게 한다.  -->
 	<update id="LctreDAO.deleteLctre" parameterClass="LctreVO">
 		<![CDATA[
@@ -244,6 +269,5 @@
 			WHERE 1=1
 			AND LCTRE_SEQ = #lctre_seq#
 		]]>
-	</update>		
-	
+	</update>
 </sqlMap>	

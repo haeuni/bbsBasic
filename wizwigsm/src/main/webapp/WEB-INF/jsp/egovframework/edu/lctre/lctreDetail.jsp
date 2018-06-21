@@ -144,12 +144,15 @@ function fnSubmit(){
 				<td><c:out value="${lctreDetail.lctre_endde}"/></td>		
 			</tr>
 			<tr>
+				<th>첨부파일</th>
+				<td colspan="3">-</td>			
+			</tr>
+			<tr>
 				<td colspan="2"></td>
 				<td colspan="1"><button onclick="fnUpdate('${lctreDetail.lctre_seq}');" class="formBtn">수정</button></td>
 				<td colspan="1"><button onclick="fnList();" class="formBtn">목록</button></td>
 			</tr>
-		</table>
-		
+		</table>	
 		
 		<h3>신청목록</h3>
 		<table border="1">
