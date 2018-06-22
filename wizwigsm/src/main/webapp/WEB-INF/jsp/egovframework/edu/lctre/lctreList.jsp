@@ -44,7 +44,6 @@
 	}
 </style>
 <script type="text/javascript">
-alert('${login_pnttm}');
 
 /* 로그아웃 */
 function fnLogOut(){	
