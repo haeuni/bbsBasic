@@ -144,48 +144,51 @@ function fnSubmit(){
 				<td><c:out value="${lctreDetail.lctre_endde}"/></td>		
 			</tr>
 			<tr>
-				<th>첨부파일</th>
-				<td colspan="3">-</td>			
-			</tr>
-			<tr>
 				<td colspan="2"></td>
-				<td colspan="1"><button onclick="fnUpdate('${lctreDetail.lctre_seq}');" class="formBtn">수정</button></td>
+				<c:choose>
+					<c:when test="${user_id eq 'admin'}">
+						<td colspan="1"><button onclick="fnUpdate('${lctreDetail.lctre_seq}');" class="formBtn">수정</button></td>
+					</c:when>
+					<c:otherwise><td colspan="1"></td></c:otherwise>
+				</c:choose>
 				<td colspan="1"><button onclick="fnList();" class="formBtn">목록</button></td>
 			</tr>
 		</table>	
 		
+		<c:if test="${user_id eq 'admin'}" >
 		<h3>신청목록</h3>
-		<table border="1">
-			<tr>
-				<th>번호</th>
-				<th>신청자</th>
-				<th>신청일</th>
-				<th>신청상태</th>
-			</tr>
-			<c:forEach var="result" items="${reqstDetail}">
-				
-				<input type="hidden" id="reqst_seq" name="reqst_seq" value="${result.reqst_seq}"/>
+			<table border="1">
 				<tr>
-					<td><c:out value="${result.reqst_seq}"/></td>
-					<td><c:out value="${result.applcnt_nm}"/></td>
-					<td><c:out value="${result.frst_regist_pnttm}"/></td>
-					<!-- 신청상태 (완료:C / 신청중:R / 취소:N) -->
-					<td>					
-						<select name="selLctreSttus" id="selLctreSttus" onchange="fnSttus();">
-								<option value="C" <c:if test="${result.lctre_sttus eq 'C'}" >selected</c:if>>신청완료</option>
-								<option value="R" <c:if test="${result.lctre_sttus eq 'R'}" >selected</c:if>>신청중</option>
-								<option value="N" <c:if test="${result.lctre_sttus eq 'N'}" >selected</c:if>>신청취소</option>
-						</select>				
-					</td>
+					<th>번호</th>
+					<th>신청자</th>
+					<th>신청일</th>
+					<th>신청상태</th>
 				</tr>
-			</c:forEach>	
-			<tr>		
-				<td colspan="3"></td>
-				<td colspan="1">
-					<input type="button" onclick="fnSubmit();" value="저장" class="formBtn"/>
-				</td>
-			</tr>			
-		</table>
+				<c:forEach var="result" items="${reqstDetail}">
+					
+					<input type="hidden" id="reqst_seq" name="reqst_seq" value="${result.reqst_seq}"/>
+					<tr>
+						<td><c:out value="${result.reqst_seq}"/></td>
+						<td><c:out value="${result.applcnt_nm}"/></td>
+						<td><c:out value="${result.frst_regist_pnttm}"/></td>
+						<!-- 신청상태 (완료:C / 신청중:R / 취소:N) -->
+						<td>					
+							<select name="selLctreSttus" id="selLctreSttus" onchange="fnSttus();">
+									<option value="C" <c:if test="${result.lctre_sttus eq 'C'}" >selected</c:if>>신청완료</option>
+									<option value="R" <c:if test="${result.lctre_sttus eq 'R'}" >selected</c:if>>신청중</option>
+									<option value="N" <c:if test="${result.lctre_sttus eq 'N'}" >selected</c:if>>신청취소</option>
+							</select>				
+						</td>
+					</tr>
+				</c:forEach>	
+				<tr>		
+					<td colspan="3"></td>
+					<td colspan="1">
+						<input type="button" onclick="fnSubmit();" value="저장" class="formBtn"/>
+					</td>
+				</tr>			
+			</table>
+		</c:if>
 	</form>
 </body>
 </html>

@@ -125,12 +125,6 @@ function fnSelInstrctrNm(){
 				</td>	
 			</tr>
 			<tr>
-				<!-- <th class="th">파일첨부</th>
-				<td>
-					<input type="file" id="lctre_file" name="lctre_file" />
-				</td> -->
-			</tr>
-			<tr>
 				<th class="th"></th>
 				<td class="aTd">
 					<a href="javascript:void(0);" onclick="fnSubmit();">저장</a>

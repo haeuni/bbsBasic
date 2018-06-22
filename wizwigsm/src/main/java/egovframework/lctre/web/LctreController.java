@@ -1,17 +1,16 @@
 package egovframework.lctre.web;
 
-import java.io.File;
 import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 import egovframework.lctre.service.LctreService;
 import egovframework.lctre.service.LctreVO;
@@ -39,6 +38,7 @@ public class LctreController {
 				
 		try{	
 			/* search */
+			
 				String selListSearchField = "";
 				String listSearchText = "";
 				
@@ -49,16 +49,9 @@ public class LctreController {
 				if(request.getParameter("listSearchText") != null){
 					listSearchText = request.getParameter("listSearchText");
 					System.out.println("###################### 넘어온 값" + listSearchText);
-	
-					// 검색한 정보를 session에 실어 상태유지
-					/*request.getSession().setAttribute("selListSearchField", selListSearchField);
-					request.getSession().setAttribute("listSearchText", listSearchText);*/
-				}/*else if(request.getSession().getAttribute("selListSearchField") != null){
-					// 만약에 session에 selListSearch의 값이 실렸다면 변수에 저장하여 vo에게 전달해준다.
-					selListSearchField = (String)request.getSession().getAttribute("selListSearchField");
-					listSearchText = (String)request.getSession().getAttribute("listSearchText");			
-				}*/
-			
+					
+				}
+				
 			/* page */
 			
 				// 현재페이지 (처음 접속시 무조건 1 페이지)
@@ -76,8 +69,7 @@ public class LctreController {
 				}				
 				/*if(request.getParameter("listSearchText") == null){
 					listSearchText = "file";
-				}
-				*/
+				}*/
 				
 				// 게시글 총 개수를 가져오는 메소드
 				int listCount = lctreService.selectListTotalCount(paramVO);   			
@@ -106,6 +98,7 @@ public class LctreController {
 				}                                                                                           	
 			
 			/* search */					
+			
 			paramVO.setNowPage(Integer.toString(nowPage));
 			paramVO.setStartPage(Integer.toString(startPage));
 			paramVO.setEndPage(Integer.toString(endPage));
@@ -276,7 +269,8 @@ public class LctreController {
 	
 	// 강의상세
 	@RequestMapping("/edu/lctre/selectLctreDetail.do")
-	public String selectLctreDetail(HttpServletRequest request
+	public String selectLctreDetail(HttpSession session
+			, HttpServletRequest request
 			, @ModelAttribute(value="paramVO") LctreVO paramVO
 			, ModelMap model) throws Exception{
 		
@@ -293,8 +287,10 @@ public class LctreController {
 			model.addAttribute("lctreDetail", lctreDetail);
 			
 			// 신청목록
-			List<ReqstVO> reqstDetail = lctreService.selectReqstList(paramVO);
-			model.addAttribute("reqstDetail", reqstDetail);
+			if(session.getAttribute("user_id") != "admin"){
+				List<ReqstVO> reqstDetail = lctreService.selectReqstList(paramVO);
+				model.addAttribute("reqstDetail", reqstDetail);
+			}			
 		
 			model.addAttribute("lctreVO", paramVO);
 			

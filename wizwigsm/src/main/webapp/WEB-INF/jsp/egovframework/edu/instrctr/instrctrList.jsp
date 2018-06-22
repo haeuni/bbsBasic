@@ -6,6 +6,16 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>instrctrList</title>
+<style>
+	#btn{
+		background-color : #cecece;
+		font-weight: bold;	
+	}
+	#btn > a{
+		color : black; 
+		text-decoration: none;
+	}
+</style>
 <script type="text/javascript">
 function fnForm(){
 	var frmForm = document.frmForm;
@@ -17,6 +27,11 @@ function fnDetail(instrctr_seq){
 	frmDetail.instrctr_seq.value = instrctr_seq;
 	frmDetail.action = "/edu/instrctr/selectInstrctrDetail.do";
 	frmDetail.submit();
+}
+function fnLctreList(){	
+	var frmForm = document.frmForm;
+	frmForm.action = "/edu/lctre/selectLctreList.do";
+	frmForm.submit();
 }
 </script>
 </head>
@@ -49,7 +64,9 @@ function fnDetail(instrctr_seq){
 		</tr>
 		</c:forEach>
 		<tr>
-			<td colspan="5"><a href="javascript:void(0)" onclick="fnForm()">등록</a></td>
+			<td colspan="1" id="btn"><a href="javascript:void(0)" onclick="fnForm();">등록</a></td>
+			<td colspan="1" id="btn"><a href="javascript:void(0)" onclick="fnLctreList();">강의목록</a></td>
+			<td colspan="3"></td>
 		</tr>
 	</table>
 </body>
