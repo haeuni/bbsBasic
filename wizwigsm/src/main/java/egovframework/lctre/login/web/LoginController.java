@@ -1,7 +1,5 @@
 package egovframework.lctre.login.web;
 
-import java.util.Calendar;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,10 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
-
-import com.ibm.icu.text.SimpleDateFormat;
-import com.sun.star.bridge.oleautomation.Date;
 
 import egovframework.lctre.login.service.LoginService;
 import egovframework.lctre.login.service.LctreLoginVO;
