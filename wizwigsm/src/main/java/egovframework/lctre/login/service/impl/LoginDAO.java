@@ -8,7 +8,7 @@ import egovframework.rte.psl.dataaccess.EgovAbstractDAO;
 @Repository("LoginDAO")
 public class LoginDAO extends EgovAbstractDAO {
 
-	/* 로그인 정보*/
+	/* 로그인 정보 */
     public LctreLoginVO selectLctreLoginForm(LctreLoginVO paramVO) throws Exception {
         return (LctreLoginVO) select("LoginDAO.selectLctreLoginForm", paramVO);
     }    
