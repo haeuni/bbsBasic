@@ -286,10 +286,16 @@ public class LctreController {
 			LctreVO lctreDetail = lctreService.selectLctreDetail(paramVO);		
 			model.addAttribute("lctreDetail", lctreDetail);
 			
-			// 신청목록
-			if(session.getAttribute("user_id") != "admin"){
-				List<ReqstVO> reqstDetail = lctreService.selectReqstList(paramVO);
-				model.addAttribute("reqstDetail", reqstDetail);
+			String aaa = (String) session.getAttribute("user_id");
+			System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@ session aaa :"+aaa);
+			System.out.println(session.getAttribute("user_id"));
+			
+			// 신청목록			
+			if(aaa != null){
+				if("admin".equals((String) session.getAttribute("user_id"))){
+					List<ReqstVO> reqstDetail = lctreService.selectReqstList(paramVO);
+					model.addAttribute("reqstDetail", reqstDetail);
+				}
 			}			
 		
 			model.addAttribute("lctreVO", paramVO);
@@ -341,10 +347,7 @@ public class LctreController {
 			List<LctreVO> lnstrctrCobList = lctreService.selectInstrctrNmCobList(paramVO);	
 			model.addAttribute("lnstrctrCobList", lnstrctrCobList);
 			
-			// 수정
-			// 매핑시켜온 값들이 담겨있는 InctrDetail에 담겨있는 값. 
-			// 		= 강의테이블의 강의번호 / 강의명 / 모집인원
-			// 		= 강사테이블의 강사번호 / 강사명
+			// 수정폼에 보여주기위한 상세 List
 			LctreVO lctreDetail = lctreService.selectLctreDetail(paramVO);
 			model.addAttribute("lctreDetail", lctreDetail);
 			

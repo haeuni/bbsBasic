@@ -11,6 +11,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <style>
 	table{
+		width: 750px;
 		text-align: center;	
 	}
 	h3{
@@ -51,6 +52,13 @@ function fnLogOut(){
 	frm.action = "/edu/lctre/login/selectLctreLogOut.do";
 	frm.submit();
 }
+/* Q&A 게시판 */
+function fnNttList(){
+	var frm = document.frm;
+	frm.action = "/edu/ntt/selectNttList.do";
+	frm.submit();
+}
+
 /* 접수가능 버튼 (일반 user만 사용 가능) */
 function fnReqstForm(lctre_seq){	
 	var frm = document.frm;	
@@ -174,14 +182,15 @@ function fnSelListSearch(){
 </script>
 </head>
 <body>
-	<!-- 오늘날짜 -->
-	<c:set var="today" value="<%=new java.util.Date()%>" />	
-	<!-- 현재날짜타입을 해당패턴으로 변환 -->
-	<fmt:formatDate var="now" type="date" value="${today}" pattern="yyyyMMdd HH:mm:ss"/>	
-	현재시각 :  ${now} </br>		
-	로그인시각 : ${login_pnttm}
+	<%--
+		오늘날짜 	<c:set var="today" value="<%=new java.util.Date()%>" />			 
+		현재날짜타입을 해당패턴으로 변환 	<fmt:formatDate var="now" type="date" value="${today}" pattern="yyyyMMdd HH:mm:ss"/>			
+		현재시각 :  ${now} </br>		
+		로그인시각 : ${login_pnttm}
+	--%>
 	
-	<h4 style="color: blue; display: inline; margin-left: 220px;">
+	<!-- 로그인 / Q&A 게시판 이동-->
+	<h4 style="color: blue; display: inline; margin-left: 450px;">
 		<c:choose>
 			<c:when test="${user_id eq 'admin'}">
 				로그인 : 관리자
@@ -192,7 +201,9 @@ function fnSelListSearch(){
 		</c:choose>
 	</h4>
 	<input type="button" value="로그아웃" onclick="fnLogOut();"/>  
+	<input type="button" value="Q&A 게시판" onclick="fnNttList();"/>
 
+	<!-- 강의목록 frm -->
 	<form id="frm" name="frm" method="post">		
 		<input type="hidden" id="lctre_seq" name="lctre_seq" />	
 		<input type="hidden" id="chkInfoArr" name="chkInfoArr" />

@@ -6,4 +6,5 @@
 	<sqlMap resource="egovframework/sqlmap/edu/EduLctre_SQL_Cubrid.xml"/>	
 	<sqlMap resource="egovframework/sqlmap/edu/EduInstrctr_SQL_Cubrid.xml"/>
 	<sqlMap resource="egovframework/sqlmap/edu/EduLogin_SQL_Cubrid.xml"/>
+	<sqlMap resource="egovframework/sqlmap/edu/EduNtt_SQL_Cubrid.xml"/>
 </sqlMapConfig>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="NttDAO">
+
+	<typeAlias alias="egovMap" 	type="egovframework.rte.psl.dataaccess.util.EgovMap" />
+	<typeAlias alias="LctreLoginVO"  type="egovframework.lctre.login.service.LctreLoginVO"/>
+	<typeAlias alias="NttVO"  type="egovframework.ntt.service.NttVO"/>
+	
+	<!-- 질문 목록 -->
+	<select id="NttDAO.selectNttList" parameterClass="LctreLoginVO" resultClass="NttVO">	
+		<![CDATA[
+			SELECT NTT_SEQ
+				, NTT_SJ
+				, FRST_REGISTER_ID
+				, INQIRE_CNT
+				, TO_CHAR(FRST_REGIST_PNTTM, 'YYYY-MM-DD') AS "FRST_REGIST_PNTTM"
+				FROM T_NTTINFO
+				WHERE 1=1
+		]]>
+				<isNotEqual property="user_id" compareValue="admin">
+						AND FRST_REGISTER_ID = #user_id#
+				</isNotEqual>
+		<![CDATA[
+				ORDER BY NTT_SEQ DESC 
+		]]>			
+	</select>		
+	
+	<!-- 질문 등록 -->
+	<update id="NttDAO.insertNttForm" parameterClass="NttVO">
+		<![CDATA[
+			INSERT INTO T_NTTINFO
+				(NTT_SEQ
+				, NTT_SJ
+				, NTT_CN
+				, INQIRE_CNT
+				, FRST_REGISTER_ID
+				, FRST_REGIST_PNTTM
+				)
+				VALUES 
+				(SEQ_NTTINFO.NEXT_VALUE
+				, #ntt_sj#
+				, #ntt_cn#
+				, 0
+				, #frst_register_id#
+				, SYSDATETIME)
+		]]>
+	</update>
+	
+	<!-- 질문 상세 -->
+	<select id="NttDAO.selectNttDetail" parameterClass="NttVO" resultClass="NttVO">	
+		<![CDATA[
+			SELECT NTT_SEQ
+				, NTT_SJ
+				, NTT_CN
+				, FRST_REGISTER_ID
+				FROM T_NTTINFO
+				WHERE 1=1
+				AND NTT_SEQ = #ntt_seq#
+				ORDER BY NTT_SEQ DESC			
+		]]>			
+	</select>	
+	
+	<!-- 질문상세 클릭시 조회수 증가 -->
+	<update id="NttDAO.modNttCnt" parameterClass="NttVO">
+		<![CDATA[
+			UPDATE T_NTTINFO
+			SET INQIRE_CNT = (SELECT NVL(MAX(INQIRE_CNT),0)+1 AS INQIRE_CNT
+								FROM T_NTTINFO
+								WHERE 1=1
+								AND NTT_SEQ= #ntt_seq#)
+			WHERE 1=1
+			AND NTT_SEQ = #ntt_seq#
+		]]>
+	</update>	
+	
+	<!-- 질문 수정 -->
+	<update id="NttDAO.modNtt" parameterClass="NttVO">
+		<![CDATA[
+			UPDATE T_NTTINFO
+			SET  NTT_SJ = #ntt_sj#
+				, NTT_CN = #ntt_cn#
+				, LAST_UPDUSR_ID = #last_updusr_id#
+				, LAST_UPDT_PNTTM = SYSDATETIME
+			WHERE 1=1
+			AND NTT_SEQ = #ntt_seq#
+		]]>
+	</update>	
+	
+	<!-- 강의삭제 -->
+	<delete id="NttDAO.deleteNtt" parameterClass="NttVO">
+		<![CDATA[
+			DELETE FROM T_NTTINFO
+			WHERE 1=1
+			AND NTT_SEQ = #ntt_seq#
+		]]>
+	</delete>
+</sqlMap>
+
+
+
+
+
+
+
+
+
+
+
