@@ -5,15 +5,15 @@
 
 <!-- ############### 2. sql.xml ################## -->
 <!-- namespace : 중복 X / 되도록이면 DAO와 동일하게 한다.  -->
-<sqlMap namespace="EduLogin">
+<!-- <sqlMap namespace="EduLogin">
 	
 	<typeAlias  alias="egovMap" 	type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
 	
-	<!-- typeAlias : VO를 선언한다고 생각 / 해당 xml파일안에서 수행되는 sql 리턴값 또는 파라미터값을 VO로 사용할때 선언 -->
-	<!-- alias : 임의 지정 / DAO에서 파라미터 넘어온다. -->
+	typeAlias : VO를 선언한다고 생각 / 해당 xml파일안에서 수행되는 sql 리턴값 또는 파라미터값을 VO로 사용할때 선언
+	alias : 임의 지정 / DAO에서 파라미터 넘어온다.
 	<typeAlias  alias="EduLoginVO" 	type="egovframework.edu.service.EduLoginVO"/>
 	
-	<!-- resultMap : 사용하는것만 선언 / VO 리턴시 CLOB, BLOB 같은 데이터 타입은 하나씩 나열해 리턴 받기  -->
+	resultMap : 사용하는것만 선언 / VO 리턴시 CLOB, BLOB 같은 데이터 타입은 하나씩 나열해 리턴 받기 
 	<resultMap id="userInfo"		class="EduLoginVO">
 		<result property="usrId" 	column="USR_ID" columnIndex="1"/>
 		<result property="usrPw" 	column="USR_PW" columnIndex="2"/>
@@ -21,14 +21,14 @@
 	</resultMap>
 	
 	
-	<!-- id : 통상적으로 'DAO파일명.메소드명' -->
-	<!-- parameterClass : 파라미터를 클래스 형태로 넘김 / typeAlias 또는 클래스경로 -->
-	<!-- parameterMap : 파라미터를 맵 형태로 넘김 / resultMap -->
-	<!-- resultClass / resultMap : 위 형태와 동일  -->
+	id : 통상적으로 'DAO파일명.메소드명'
+	parameterClass : 파라미터를 클래스 형태로 넘김 / typeAlias 또는 클래스경로
+	parameterMap : 파라미터를 맵 형태로 넘김 / resultMap
+	resultClass / resultMap : 위 형태와 동일 
 	<select id="EduLoginDAO.getUserInfo" parameterClass="EduLoginVO" resultMap="userInfo">
 		
-		<!-- ########### 1. 필요한 쿼리 작성 ########## -->
-		<!-- #usrId# == #변수명# -->
+		########### 1. 필요한 쿼리 작성 ##########
+		#usrId# == #변수명#
 		
 		<![CDATA[
 			SELECT
@@ -42,4 +42,32 @@
 		]]> 
 	
 	</select> 	
+</sqlMap> -->
+<sqlMap namespace="LoginDAO">
+
+	<typeAlias alias="egovMap" 	type="egovframework.rte.psl.dataaccess.util.EgovMap" />
+	<typeAlias alias="LctreLoginVO"  type="egovframework.lctre.login.service.LctreLoginVO"/>
+	
+	<!-- 로그인 정보 -->
+	<select id="LoginDAO.selectLctreLoginForm" parameterClass="LctreLoginVO" resultClass="LctreLoginVO">	
+		<![CDATA[
+			SELECT		USER_ID
+				,		USER_PW
+				,		USE_AT
+				, 		LOGIN_PNTTM
+				FROM	T_USRINFO
+				WHERE 1=1
+				AND	USER_ID	= #user_id#
+				AND	USER_PW = #user_pw#
+				AND USE_AT ='Y'
+		]]>	
+	</select>
+	
+	<!-- 로그인 시간 업데이트 -->
+	<update id="LoginDAO.modLctreLoginForm" parameterClass="LctreLoginVO">	
+		UPDATE T_USRINFO
+            SET LOGIN_PNTTM = SYSDATE
+            WHERE 1=1
+            AND USER_ID = #user_id#
+	</update>				
 </sqlMap>

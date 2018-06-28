@@ -26,17 +26,12 @@ function fnLogOut(){
 	frm.action = "/edu/lctre/login/selectLctreLogOut.do";
 	frm.submit();
 }
-/* 질문 수정 */
-function fnNtt(user_id){
+/* 답변 수정 */
+function fnRepl(user_id){
 	var frm = document.frm;
 	frm.last_updusr_id.value = user_id;
-	
-	if(confirm("수정하시겠습니까?") == true){
-		frm.action = "/edu/ntt/modNtt.do";
-		frm.submit();
-	}else{
-		return
-	}			
+	frm.action = "/edu/ntt/modRepl.do";
+	frm.submit();
 }
 /* 질문 목록 */
 function fnNttList(){
@@ -48,11 +43,9 @@ function fnNttList(){
 </head>
 <body>	
 	<form id="frm" name="frm" method="post">		
-		<input type="hidden" id="frst_register_id" name="frst_register_id" value="${user_id}"/>
-		<!-- 수정시 최종 등록자 변경 -->
-		<input type="hidden" id="last_updusr_id" name="last_updusr_id"/>
-		
-		<input type="hidden" id="ntt_seq" name="ntt_seq" value="${nttDetail.ntt_seq}"/>	
+		<input type="hidden" id="frst_register_id" name="frst_register_id" value="${user_id}"/>		
+		<input type="hidden" id="last_updusr_id" name="last_updusr_id"/>	<!-- 수정시 최종 등록자 변경 -->	
+		<input type="hidden" id="ntt_seq" name="ntt_seq" value="${reqlDetail.ntt_seq}"/>	
 	
 		<h4 style="color: blue; display: inline; margin-left: 500px;">
 			<c:choose>
@@ -66,23 +59,27 @@ function fnNttList(){
 		</h4>
 		<input type="button" value="로그아웃" onclick="fnLogOut();"/>
 		
-		<h3>질문 등록</h3>	
+		<h3>답변 수정</h3>	
 		<table border="1">
 			<tr>
 				<th>질문제목</th>
-				<td colspan="2"><input type="text" id="ntt_sj" name="ntt_sj" value="${nttDetail.ntt_sj}" style="width:95%;"/></td>				
+				<td colspan="2"><c:out value="${reqlDetail.repl_sj}"/></td>				
+			</tr>
+			<tr>
+				<th>답변제목</th>
+				<td colspan="2"><input type="text" id="ntt_sj" name="ntt_sj" value="${reqlDetail.ntt_sj}" style="width:95%;"/></td>				
 			</tr>					
 			<tr>
-				<th>질문내용</th>
+				<th>답변내용</th>
 				<td colspan="2">
-					<input type="text" id="ntt_cn" name="ntt_cn" value="${nttDetail.ntt_cn}" style="width:95%;"/>
+					<input type="text" id="ntt_cn" name="ntt_cn" value="${reqlDetail.ntt_cn}" style="width:95%;"/>
 				</td>
 			</tr>
 		</table>	
 		<table id="table">
 			<!-- 질문 등록 -->
 			<tr>
-				<td style="background-color: yellow;"><a href="javascript:void(0);" onclick="fnNtt('${user_id}');">수정</a></td>
+				<td style="background-color: yellow;"><a href="javascript:void(0);" onclick="fnRepl('${user_id}');">수정</a></td>
 				<td style="background-color: #cecece;"><a href="javascript:void(0);" onclick="fnNttList();">목록</a></td>
 			</tr>
 		</table>

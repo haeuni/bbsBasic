@@ -7,4 +7,5 @@
 	<sqlMap resource="egovframework/sqlmap/edu/EduBbs_SQL_Oracle.xml"/>	
 	<sqlMap resource="egovframework/sqlmap/edu/EduLctre_SQL_Oracle.xml"/>	
 	<sqlMap resource="egovframework/sqlmap/edu/EduInstrctr_SQL_Oracle.xml"/>
+	<sqlMap resource="egovframework/sqlmap/edu/EduNtt_SQL_Oracle.xml"/>
 </sqlMapConfig>

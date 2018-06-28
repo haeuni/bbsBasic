@@ -31,6 +31,11 @@ public class NttDAO extends EgovComAbstractDAO{
 		update("NttDAO.modNttCnt", paramVO);
 	}
 	
+	// 질문 상세 ( 해당글의 답변 유무 판단 )
+	public int selectNttParntsCnt(NttVO paramVO){
+		return (int) select("NttDAO.selectNttParntsCnt", paramVO);
+	}
+	
 	// 질문 수정
 	public void modNtt(NttVO paramVO){
 		update("NttDAO.modNtt", paramVO);
@@ -40,4 +45,26 @@ public class NttDAO extends EgovComAbstractDAO{
 	public void deleteNtt(NttVO paramVO){
 		delete("NttDAO.deleteNtt", paramVO);
 	}
+	
+	// 답변 목록
+	public List<NttVO> selectReplList(NttVO paramVO){
+		return (List<NttVO>) list("NttDAO.selectReplList", paramVO);
+	}
+	
+	// 답변 등록
+	public void insertReplForm(NttVO paramVO){
+		insert("NttDAO.insertReplForm", paramVO);
+	}
+	
+	// 답변 상세
+	public NttVO selectReplDetail(NttVO paramVO){
+		return (NttVO) select("NttDAO.selectReplDetail", paramVO);
+	}
+	
+	// 답변 수정
+	public void modRepl(NttVO paramVO){
+		update("NttDAO.modRepl", paramVO);
+	}
+	
+	// 답변 삭제 ( 질문삭제 동일사용 )
 }

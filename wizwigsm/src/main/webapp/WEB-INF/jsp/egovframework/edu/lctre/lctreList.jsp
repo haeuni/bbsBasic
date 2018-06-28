@@ -182,15 +182,15 @@ function fnSelListSearch(){
 </script>
 </head>
 <body>
-	<%--
-		오늘날짜 	<c:set var="today" value="<%=new java.util.Date()%>" />			 
-		현재날짜타입을 해당패턴으로 변환 	<fmt:formatDate var="now" type="date" value="${today}" pattern="yyyyMMdd HH:mm:ss"/>			
+		오늘날짜 :	<c:set var="today" value="<%=new java.util.Date()%>" />			 
+		<!-- 현재날짜타입을 해당패턴으로 변환 --> 
+		<fmt:formatDate var="now" type="date" value="${today}" pattern="yyyyMMdd HH:mm:ss"/>			
 		현재시각 :  ${now} </br>		
 		로그인시각 : ${login_pnttm}
-	--%>
+
 	
 	<!-- 로그인 / Q&A 게시판 이동-->
-	<h4 style="color: blue; display: inline; margin-left: 450px;">
+	<h4 style="color: blue; display: inline; margin-left: 200px;">
 		<c:choose>
 			<c:when test="${user_id eq 'admin'}">
 				로그인 : 관리자
@@ -260,7 +260,7 @@ function fnSelListSearch(){
 				<td><c:out value="${result.reqst_cnt}"/>/<c:out value="${result.rcrundt}"/></td>							
 				
 				<!-- 비고 -->
-				<td id="tdBtn">			
+				<td id="tdBtn">		
 				<c:choose>		
 					<c:when test="${now lt result.lctre_begin 
 									and result.lctre_sttus eq 'R' 
@@ -277,12 +277,11 @@ function fnSelListSearch(){
 									or result.reqst_cnt+0 eq result.rcrundt+0)}">
 					<a href="javascript:void(0);" onclick="fnReqstList('${result.lctre_seq}');"  id="lctreBtnN">접수종료</a>
 					</c:when>		
-					<c:otherwise>-</c:otherwise>
 				</c:choose>
 				</td>
 					
 				<!-- 등록일 -->
-				<td id="date"><c:out value="${result.frst_regist_pnttm}"/></td>			
+				<td id="date"><c:out value="${result.frst_regist_pnttm}"/></td>		
 			</tr>
 			</c:forEach>
 			<tr>

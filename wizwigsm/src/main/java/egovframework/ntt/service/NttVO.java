@@ -14,17 +14,21 @@ public class NttVO {
 	- 최종등록일
 */
 	
-	String ntt_seq;
-	String ntt_sj;
-	String ntt_cn;
-	String parnts_ntt_seq;
-	String inqire_cnt;
-	String frst_register_id;
-	String frst_regist_pnttm;
-	String last_updusr_id;
-	String last_updt_pnttm;
+	private String ntt_seq;
+	private String ntt_sj;
+	private String ntt_cn;
+	private String parnts_ntt_seq;
+	private String inqire_cnt;
+	private String frst_register_id;
+	private String frst_regist_pnttm;
+	private String last_updusr_id;
+	private String last_updt_pnttm;	
 	
-	
+	// 답변상세 (질문제목)
+	private String repl_sj;
+	// 질문상세 (답변CNT)
+	private int parntscnt;
+		
 	public String getNtt_seq() {
 		return ntt_seq;
 	}
@@ -78,6 +82,18 @@ public class NttVO {
 	}
 	public void setLast_updt_pnttm(String last_updt_pnttm) {
 		this.last_updt_pnttm = last_updt_pnttm;
+	}
+	public String getRepl_sj() {
+		return repl_sj;
+	}
+	public void setRepl_sj(String repl_sj) {
+		this.repl_sj = repl_sj;
+	}
+	public int getParntscnt() {
+		return parntscnt;
+	}
+	public void setParntscnt(int parntscnt) {
+		this.parntscnt = parntscnt;
 	}
 	
 }

@@ -249,12 +249,12 @@
 		<![CDATA[
 			UPDATE T_LCTRE
 			SET INSTRCTR_SEQ = #instrctr_seq# 
-			, LCTRE_NM = #lctre_nm#
-			, RCRUNDT = #rcrundt#
-			, LCTRE_STTUS = #lctre_sttus#
-			, LCTRE_BEGIN = #lctre_begin#
-			, LCTRE_ENDDE = #lctre_endde#
-			, LAST_UPDT_PNTTM = SYSDATETIME
+				, LCTRE_NM = #lctre_nm#
+				, RCRUNDT = #rcrundt#
+				, LCTRE_STTUS = #lctre_sttus#
+				, LCTRE_BEGIN = #lctre_begin#
+				, LCTRE_ENDDE = #lctre_endde#
+				, LAST_UPDT_PNTTM = SYSDATETIME
 			WHERE 1=1
 			AND LCTRE_SEQ = #lctre_seq#
 		]]>

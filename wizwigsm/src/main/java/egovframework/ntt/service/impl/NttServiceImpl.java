@@ -37,6 +37,11 @@ public class NttServiceImpl extends EgovAbstractServiceImpl implements NttServic
 			nttDAO.modNttCnt(paramVO);
 		}
 		
+		// 질문 상세 ( 해당글의 답변 유무판단 )
+		public int selectNttParntsCnt(NttVO paramVO){
+			return nttDAO.selectNttParntsCnt(paramVO);
+		}
+		
 		// 질문 수정
 		public void modNtt(NttVO paramVO){
 			nttDAO.modNtt(paramVO);
@@ -46,4 +51,26 @@ public class NttServiceImpl extends EgovAbstractServiceImpl implements NttServic
 		public void deleteNtt(NttVO paramVO){
 			nttDAO.deleteNtt(paramVO);
 		}
+		
+		// 답변 목록
+		public List<NttVO> selectReplList(NttVO paramVO){
+			return nttDAO.selectReplList(paramVO);
+		}
+		
+		// 답변 등록
+		public void insertReplForm(NttVO paramVO){
+			nttDAO.insertReplForm(paramVO);
+		}
+		
+		// 답변 상세
+		public NttVO selectReplDetail(NttVO paramVO){
+			return nttDAO.selectReplDetail(paramVO);
+		}
+		
+		// 답변 수정
+		public void modRepl(NttVO paramVO){
+			nttDAO.modRepl(paramVO);
+		}
+		
+		// 답변 삭제 ( 질문삭제 동일사용 )
 }
